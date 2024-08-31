@@ -1,13 +1,12 @@
 // src/index.ts
-import express from 'express';
+import App from './app';
+import { WodsController } from './controllers/wodsController';
+import WodsRoutes from './routes/wodsRoutes';
+import WodsService from './services/wodsService';
 
-const app = express();
-const port = 3000;
-
-app.get('/', (req, res) => {
-    res.send('Hello, TypeScript with Express!');
-});
-
-app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
-});
+try {
+    const app = new App([new WodsRoutes(new WodsController(new WodsService()))]);
+    app.start();
+} catch(error) {
+    console.log(error);
+}

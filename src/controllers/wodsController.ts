@@ -1,10 +1,14 @@
 import { RequestHandler } from "express";
 import WodsService from "../services/wodsService";
 import { Wod } from '../models/wod';
+import { TYPES } from "../types";
+import { inject, injectable } from "inversify";
 
+@injectable()
 export class WodsController {
-    constructor(private wodsService: WodsService) {
+    constructor(@inject(TYPES.WodsService) private wodsService: WodsService) {
     }
+
     public getWods: RequestHandler = (req, res, next) => {
         var wods = this.wodsService.getWods();
 

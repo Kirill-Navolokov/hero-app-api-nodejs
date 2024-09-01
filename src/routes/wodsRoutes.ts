@@ -1,14 +1,15 @@
 import { Router } from 'express';
 import { WodsController } from '../controllers/wodsController';
 import { Route } from './route';
+import { TYPES } from '../types';
+import { inject, injectable } from 'inversify';
 
+@injectable()
 export default class WodsRoutes implements Route {
-    private readonly wodsController: WodsController;
-
     public readonly path: string;
     public readonly router: Router;
 
-    constructor(wodsController: WodsController) {
+    constructor(@inject(TYPES.WodsController) private wodsController: WodsController) {
         this.router = Router();
         this.path = '/wods';
         this.wodsController = wodsController;

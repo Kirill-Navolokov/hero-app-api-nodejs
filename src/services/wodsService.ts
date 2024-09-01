@@ -1,6 +1,8 @@
+import { injectable } from 'inversify';
 import { WodHonorship } from '../enums/wodHonorship';
 import { Wod } from '../models/wod';
 
+@injectable()
 export default class WodsService {
     private wods: Wod[];
 

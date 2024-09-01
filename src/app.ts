@@ -1,19 +1,23 @@
 import express from 'express';
 import { Application } from "express";
-import { Route } from "./routes/route";
+import "reflect-metadata";
+import { iocContainer } from './inversify.config';
+import WodsRoutes from './routes/wodsRoutes';
+import { TYPES } from './types';
+import { Route } from './routes/route';
 
 export default class App {
     private readonly app: Application;
     private readonly port: number;
 
-    constructor(routes: Route[]) {
+    constructor() {
         this.port = 3000;
         this.app = express();
 
         this.app.get('/', (req, res) => {
             res.send('Hello, TypeScript with Express!');
         });
-        this.initRoutes(routes);
+        this.registerRoutes();
     }
 
     public start() {
@@ -22,9 +26,16 @@ export default class App {
         });
     }
 
-    private initRoutes(routes: Route[]) {
-        routes.forEach(route => {
-            this.app.use(route.path, route.router);
-        });
+    private registerRoutes() {
+        this.getRoutes()
+            .forEach(route => {
+                this.app.use(route.path, route.router);
+            });
+    }
+
+    private getRoutes(): Route[] {
+        var wodsRoutes = iocContainer.get<WodsRoutes>(TYPES.WodsRoutes);
+
+        return [wodsRoutes];
     }
 }

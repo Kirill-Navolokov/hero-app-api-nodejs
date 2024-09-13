@@ -3,6 +3,7 @@ import WodsService from "./services/wodsService";
 import { TYPES } from "./types";
 import { WodsController } from "./controllers/wodsController";
 import WodsRoutes from "./routes/wodsRoutes";
+import HeroDb from "./db/dbConnection";
 
 class IoCContainer extends Container {
     constructor() {
@@ -14,6 +15,7 @@ class IoCContainer extends Container {
         this.registerRoutes();
         this.registerControllers();
         this.registerServices();
+        this.registerOthers();
     }
 
     private registerRoutes() {
@@ -26,6 +28,10 @@ class IoCContainer extends Container {
 
     private registerServices() {
         this.bind<WodsService>(TYPES.WodsService).to(WodsService);
+    }
+
+    private registerOthers() {
+        this.bind<HeroDb>(TYPES.Db).to(HeroDb);
     }
 }
 

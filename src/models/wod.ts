@@ -1,6 +1,7 @@
+import { RowDataPacket } from "mysql2";
 import { WodHonorship } from "../enums/wodHonorship";
 
-export type Wod = {
+export interface Wod extends RowDataPacket {
     id: number;
     name: string;
     imageUrl: string;

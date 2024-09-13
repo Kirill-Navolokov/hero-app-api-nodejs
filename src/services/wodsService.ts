@@ -4,44 +4,44 @@ import { Wod } from '../models/wod';
 
 @injectable()
 export default class WodsService {
-    private wods: Wod[];
+    private wods: Wod[] = [];
 
     constructor() {
-        this.wods = [
-            {
-                id: 1,
-                name: 'Test WOD 1',
-                description: 'Test WOD 1 description',
-                imageUrl: '',
-                honorship: [WodHonorship.Hero, WodHonorship.Memorial],
-                scheme: 'Test WOD scheme',
-                createdAt: new Date(Date.now()),
-                wodDate: new Date(Date.now()),
-                isDeleted: false
-            },
-            {
-                id: 2,
-                name: 'Test WOD 2',
-                description: 'Test WOD 2 description',
-                imageUrl: '',
-                honorship: [WodHonorship.Memorial],
-                scheme: 'Test WOD scheme',
-                createdAt: new Date(Date.now()),
-                wodDate: new Date(Date.now()),
-                isDeleted: false
-            },
-            {
-                id: 3,
-                name: 'Test WOD 3',
-                description: 'Test WOD 3 description',
-                imageUrl: '',
-                honorship: [WodHonorship.Hero],
-                scheme: 'Test WOD scheme',
-                createdAt: new Date(Date.now()),
-                wodDate: new Date(Date.now()),
-                isDeleted: false
-            }
-        ]
+        // this.wods = [
+        //     {
+        //         id: 1,
+        //         name: 'Test WOD 1',
+        //         description: 'Test WOD 1 description',
+        //         imageUrl: '',
+        //         honorship: [WodHonorship.Hero, WodHonorship.Memorial],
+        //         scheme: 'Test WOD scheme',
+        //         createdAt: new Date(Date.now()),
+        //         wodDate: new Date(Date.now()),
+        //         isDeleted: false
+        //     },
+        //     {
+        //         id: 2,
+        //         name: 'Test WOD 2',
+        //         description: 'Test WOD 2 description',
+        //         imageUrl: '',
+        //         honorship: [WodHonorship.Memorial],
+        //         scheme: 'Test WOD scheme',
+        //         createdAt: new Date(Date.now()),
+        //         wodDate: new Date(Date.now()),
+        //         isDeleted: false
+        //     },
+        //     {
+        //         id: 3,
+        //         name: 'Test WOD 3',
+        //         description: 'Test WOD 3 description',
+        //         imageUrl: '',
+        //         honorship: [WodHonorship.Hero],
+        //         scheme: 'Test WOD scheme',
+        //         createdAt: new Date(Date.now()),
+        //         wodDate: new Date(Date.now()),
+        //         isDeleted: false
+        //     }
+        // ]
     }
     public getWods(): Wod[] {
         return this.wods;

@@ -5,6 +5,7 @@ import { iocContainer } from './inversify.config';
 import WodsRoutes from './routes/wodsRoutes';
 import { TYPES } from './types';
 import { Route } from './routes/route';
+import HeroDb from './db/dbConnection';
 
 export default class App {
     private readonly app: Application;
@@ -21,6 +22,8 @@ export default class App {
     }
 
     public start() {
+        var db = iocContainer.get<HeroDb>(TYPES.Db);
+        //await db.setupDbConnection();
         this.app.listen(this.port, () => {
             console.log(`Server is running on http://localhost:${this.port}`);
         });

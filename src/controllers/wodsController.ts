@@ -9,8 +9,8 @@ export class WodsController {
     constructor(@inject(TYPES.WodsService) private wodsService: WodsService) {
     }
 
-    public getWods: RequestHandler = (req, res, next) => {
-        var wods = this.wodsService.getWods();
+    public getWods: RequestHandler = async (req, res, next) => {
+        var wods = await this.wodsService.getWods();
 
         res.status(200).json(wods);
     }

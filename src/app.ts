@@ -5,25 +5,31 @@ import { iocContainer } from './inversify.config';
 import WodsRoutes from './routes/wodsRoutes';
 import { TYPES } from './types';
 import { Route } from './routes/route';
+import { configDotenv } from 'dotenv';
+import { EnvConfig } from './config/environment';
+import { DbClient } from './dal/dbConnection';
 
 export default class App {
     private readonly app: Application;
-    private readonly port: number;
 
     constructor() {
-        this.port = 3000;
         this.app = express();
 
         this.app.get('/', (req, res) => {
             res.send('Hello, TypeScript with Express!');
         });
         this.registerRoutes();
+        this.setEnvConfig();
     }
 
     public start() {
-        this.app.listen(this.port, () => {
-            console.log(`Server is running on http://localhost:${this.port}`);
-        });
+        var dbClient = iocContainer.get<DbClient>(TYPES.DbClient);
+        dbClient.initConnection().then(() => {
+            var env = iocContainer.get<EnvConfig>(TYPES.EnvConfig);
+            this.app.listen(env.port, () => {
+                console.log(`Server is running on http://localhost:${env.port}`);
+            });
+        })
     }
 
     private registerRoutes() {
@@ -37,5 +43,19 @@ export default class App {
         var wodsRoutes = iocContainer.get<WodsRoutes>(TYPES.WodsRoutes);
 
         return [wodsRoutes];
+    }
+
+    private setEnvConfig() {
+        var env = process.env.NODE_ENV || 'local';
+        var envFilePath: string;
+        switch(env) {
+            case 'local':
+                envFilePath = 'src/config/local.env';
+                break;
+            default:
+                throw new Error("Env not configured");
+        }
+
+        configDotenv({path: envFilePath});
     }
 }

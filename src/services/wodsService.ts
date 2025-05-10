@@ -1,12 +1,18 @@
-import { injectable } from 'inversify';
+import { inject, injectable } from 'inversify';
 import { WodHonorship } from '../enums/wodHonorship';
 import { Wod } from '../models/wod';
+import { TYPES } from '../types';
+import { DbClient } from '../dal/dbConnection';
+import { EnvConfig } from '../config/environment';
 
 @injectable()
 export default class WodsService {
     private wods: Wod[];
 
-    constructor() {
+    constructor(
+        @inject(TYPES.DbClient) private dbClient: DbClient,
+        @inject(TYPES.EnvConfig) private envConfig: EnvConfig
+    ) {
         this.wods = [
             {
                 id: 1,
@@ -43,7 +49,10 @@ export default class WodsService {
             }
         ]
     }
-    public getWods(): Wod[] {
+    public async getWods(): Promise<Wod[]> {
+        var a = await this.dbClient.db.collection(this.envConfig.dbWodsCollection)
+            .find({})
+            .toArray();
         return this.wods;
     }
 

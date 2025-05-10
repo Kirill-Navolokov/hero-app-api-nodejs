@@ -3,6 +3,8 @@ import WodsService from "./services/wodsService";
 import { TYPES } from "./types";
 import { WodsController } from "./controllers/wodsController";
 import WodsRoutes from "./routes/wodsRoutes";
+import { EnvConfig } from "./config/environment";
+import { DbClient } from "./dal/dbConnection";
 
 class IoCContainer extends Container {
     constructor() {
@@ -14,6 +16,7 @@ class IoCContainer extends Container {
         this.registerRoutes();
         this.registerControllers();
         this.registerServices();
+        this.registerInfrastructure();
     }
 
     private registerRoutes() {
@@ -26,6 +29,11 @@ class IoCContainer extends Container {
 
     private registerServices() {
         this.bind<WodsService>(TYPES.WodsService).to(WodsService);
+    }
+
+    private registerInfrastructure() {
+        this.bind<EnvConfig>(TYPES.EnvConfig).to(EnvConfig).inSingletonScope();
+        this.bind<DbClient>(TYPES.DbClient).to(DbClient).inSingletonScope();
     }
 }
 

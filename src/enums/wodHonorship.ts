@@ -1,4 +1,5 @@
 export enum WodHonorship {
-    Hero,
-    Memorial
+    Hero = 0,
+    Memorial,
+    Unit
 }

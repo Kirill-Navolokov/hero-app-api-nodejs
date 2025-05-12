@@ -1,7 +1,5 @@
-import { ObjectId } from "mongodb"
-
-export interface UnitEntity {
-    _id: ObjectId;
+export interface Unit {
+    id: string;
     name: string;
     description: string;
     foundationDate: Date;

@@ -5,6 +5,10 @@ import { WodsController } from "./controllers/wodsController";
 import WodsRoutes from "./routes/wodsRoutes";
 import { EnvConfig } from "./config/environment";
 import { DbClient } from "./dal/dbConnection";
+import UnitsRoutes from "./routes/unitsRoutes";
+import { UnitsController } from "./controllers/unitsController";
+import UnitsService from "./services/unitsService";
+import { UnitsRepository } from "./dal/repositories/unitsRepository";
 
 class IoCContainer extends Container {
     constructor() {
@@ -16,19 +20,27 @@ class IoCContainer extends Container {
         this.registerRoutes();
         this.registerControllers();
         this.registerServices();
+        this.registerRepositories();
         this.registerInfrastructure();
     }
 
     private registerRoutes() {
         this.bind<WodsRoutes>(TYPES.WodsRoutes).to(WodsRoutes);
+        this.bind<UnitsRoutes>(TYPES.UnitsRoutes).to(UnitsRoutes);
     }
 
     private registerControllers() {
         this.bind<WodsController>(TYPES.WodsController).to(WodsController);
+        this.bind<UnitsController>(TYPES.UnitsController).to(UnitsController);
     }
 
     private registerServices() {
         this.bind<WodsService>(TYPES.WodsService).to(WodsService);
+        this.bind<UnitsService>(TYPES.UnitsService).to(UnitsService);
+    }
+
+    private registerRepositories() {
+        this.bind<UnitsRepository>(TYPES.UnitsRepository).to(UnitsRepository);
     }
 
     private registerInfrastructure() {

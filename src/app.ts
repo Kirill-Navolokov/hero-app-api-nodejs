@@ -8,6 +8,7 @@ import { Route } from './routes/route';
 import { configDotenv } from 'dotenv';
 import { EnvConfig } from './config/environment';
 import { DbClient } from './dal/dbConnection';
+import UnitsRoutes from './routes/unitsRoutes';
 
 export default class App {
     private readonly app: Application;
@@ -18,6 +19,7 @@ export default class App {
         this.app.get('/', (req, res) => {
             res.send('Hello, TypeScript with Express!');
         });
+        this.app.use(express.json())
         this.registerRoutes();
         this.setEnvConfig();
     }
@@ -40,9 +42,10 @@ export default class App {
     }
 
     private getRoutes(): Route[] {
-        var wodsRoutes = iocContainer.get<WodsRoutes>(TYPES.WodsRoutes);
-
-        return [wodsRoutes];
+        return [
+            iocContainer.get<WodsRoutes>(TYPES.WodsRoutes),
+            iocContainer.get<UnitsRoutes>(TYPES.UnitsRoutes)
+        ];
     }
 
     private setEnvConfig() {

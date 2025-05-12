@@ -1,7 +1,6 @@
-export interface Unit {
+export type UnitUpdateRequest = {
     id: string;
     name: string;
     description: string;
     foundationDate: Date;
-    imageUrl: string;
 }

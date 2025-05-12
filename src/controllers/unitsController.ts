@@ -2,6 +2,8 @@ import { RequestHandler } from "express";
 import { TYPES } from "../types";
 import { inject, injectable } from "inversify";
 import UnitsService from "../services/unitsService";
+import { UnitUpdateRequest } from "../apiRequests/unitUpdateRequest";
+import { UnitCreateRequest } from "../apiRequests/unitCreateRequest";
 
 @injectable()
 export class UnitsController {
@@ -22,24 +24,26 @@ export class UnitsController {
         res.status(statusCode).json(result);
     }
 
-    // public createWod: RequestHandler = (req, res, next) => {
-    //     var newWod = req.body as Wod;
-    //     var addedWod = this.unitsService.createWod(newWod);
-
-    //     res.status(200).json(addedWod);
-    // }
-
-    // public updateWod: RequestHandler<{id: number}> = (req, res, next) => {
-    //     var wodId = req.params.id;
-    //     var wodUpdate = req.body as Wod;
-    //     var updatedWod = this.unitsService.updateWod(wodId, wodUpdate);
-
-    //     res.status(200).json(updatedWod);
-    // }
-
     public deleteUnit: RequestHandler<{id: string}> = async (req, res, next) => {
         await this.unitsService.delete(req.params.id);
 
         res.status(200).send();
+    }
+
+    public createUnit: RequestHandler = async (req, res, next) => {
+        var createRequest = req.body as UnitCreateRequest;
+        var createdUnit = await this.unitsService.create(createRequest);
+
+        res.status(200).json(createdUnit);
+    }
+
+    public updateUnit: RequestHandler<{id: string}, any, UnitUpdateRequest> = async (req, res, next) => {
+        var unitId = req.params.id;
+        var updateRequest = req.body as UnitUpdateRequest;
+        var updatedUnit = await this.unitsService.update(unitId, updateRequest);
+        var statusCode = updatedUnit == null ? 404 : 200;
+        var result = updatedUnit == null ? `No units found by id: ${req.params.id}` : updatedUnit;
+
+        res.status(statusCode).json(result);
     }
 }

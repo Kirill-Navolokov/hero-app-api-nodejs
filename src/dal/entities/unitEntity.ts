@@ -1,6 +1,6 @@
 import { ObjectId } from "mongodb"
 
-export type UnitEntity = {
+export interface UnitEntity {
     _id: ObjectId;
     name: string;
     description: string;

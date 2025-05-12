@@ -19,6 +19,7 @@ export default class App {
         this.app.get('/', (req, res) => {
             res.send('Hello, TypeScript with Express!');
         });
+        this.app.use(express.json())
         this.registerRoutes();
         this.setEnvConfig();
     }

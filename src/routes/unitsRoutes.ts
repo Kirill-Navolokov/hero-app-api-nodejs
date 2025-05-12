@@ -19,8 +19,8 @@ export default class UnitsRoutes implements Route {
     mapRoutes(): void {
         this.router.get('/', this.unitsController.getUnits);
         this.router.get('/:id', this.unitsController.getUnit);
-        //this.router.post('/', this.unitsController.createUnit);
-        //this.router.patch('/:id', this.unitsController.updateUnit);
+        this.router.post('/', this.unitsController.createUnit);
+        this.router.patch('/:id', this.unitsController.updateUnit);
         this.router.delete('/:id', this.unitsController.deleteUnit);
     }
 }

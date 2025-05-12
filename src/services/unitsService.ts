@@ -1,8 +1,10 @@
 import { inject, injectable } from "inversify";
 import { TYPES } from "../types";
 import { Unit } from "../models/unit";
-import { toModel } from "../mappings/unitsMapper";
+import { toEntity, toModel } from "../mappings/unitsMapper";
 import { UnitsRepository } from "../dal/repositories/unitsRepository";
+import { UnitUpdateRequest } from "../apiRequests/unitUpdateRequest";
+import { UnitCreateRequest } from "../apiRequests/unitCreateRequest";
 
 @injectable()
 export default class UnitsService {
@@ -26,5 +28,17 @@ export default class UnitsService {
 
     public async delete(id: string): Promise<void> {
         return this.unitsRepository.delete(id);
+    }
+
+    public async create(createRequest: UnitCreateRequest): Promise<Unit> {
+        return this.unitsRepository.create(toEntity(createRequest))
+            .then(entity => toModel(entity));
+    }
+
+    public async update(id: string, unitUpdate: UnitUpdateRequest): Promise<Unit | null> {
+        var updatedUnit = this.unitsRepository.update(id, unitUpdate)
+            .then(entity => entity == null ? null : toModel(entity));
+
+        return updatedUnit;
     }
 }

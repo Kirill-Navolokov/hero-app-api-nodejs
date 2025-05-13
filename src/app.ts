@@ -9,6 +9,8 @@ import { configDotenv } from 'dotenv';
 import { EnvConfig } from './config/environment';
 import { DbClient } from './dal/dbConnection';
 import UnitsRoutes from './routes/unitsRoutes';
+import 'express-async-errors'
+import { exceptionMiddleware } from './middlewares/exceptionMiddleware';
 
 export default class App {
     private readonly app: Application;
@@ -22,6 +24,8 @@ export default class App {
         this.app.use(express.json())
         this.registerRoutes();
         this.setEnvConfig();
+
+        this.app.use(exceptionMiddleware);
     }
 
     public start() {

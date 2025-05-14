@@ -13,17 +13,13 @@ export default class UnitsService {
     }
 
     public async get() : Promise<Unit[]> {
-        var units = this.unitsRepository.get()
+        return this.unitsRepository.get()
             .then(entities => entities.map(toModel));
-
-        return units;
     }
 
     public getById(id: string): Promise<Unit | null> {
-        var unit = this.unitsRepository.getById(id)
+        return this.unitsRepository.getById(id)
             .then(entity => entity == null ? null : toModel(entity));
-
-        return unit;
     }
 
     public async delete(id: string): Promise<void> {
@@ -36,9 +32,7 @@ export default class UnitsService {
     }
 
     public async update(id: string, unitUpdate: UnitUpdateRequest): Promise<Unit | null> {
-        var updatedUnit = this.unitsRepository.update(id, unitUpdate)
+        return this.unitsRepository.update(id, unitUpdate)
             .then(entity => entity == null ? null : toModel(entity));
-
-        return updatedUnit;
     }
 }

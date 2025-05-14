@@ -1,8 +1,8 @@
 import { ObjectId } from "mongodb"
 
-export type WodEntity = {
+export interface WodEntity {
     _id: ObjectId;
-    unitId: ObjectId;
+    unitId?: ObjectId;
     name: string;
     description: string;
     scheme: string;
@@ -10,5 +10,5 @@ export type WodEntity = {
     creationDate: Date;
     type: number;
     imageUrl: string;
-    backgroundUrl: string;
+    backgroundUrl?: string;
 }

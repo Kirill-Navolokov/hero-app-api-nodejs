@@ -3,15 +3,20 @@ import { TYPES } from "../../types";
 import { DbClient } from "../dbConnection";
 import { EnvConfig } from "../../config/environment";
 import { UnitEntity } from "../entities/unitEntity";
-import { Collection, ObjectId, ReturnDocument } from "mongodb";
+import { ObjectId, ReturnDocument } from "mongodb";
 import { UnitUpdateRequest } from "../../apiRequests/unitUpdateRequest";
-import { UnitCreateRequest } from "../../apiRequests/unitCreateRequest";
+import { BaseRepository } from "./baseRepository";
 
 @injectable()
-export class UnitsRepository {
+export class UnitsRepository extends BaseRepository<UnitEntity> {
     constructor(
-        @inject(TYPES.DbClient) private dbClient: DbClient,
+        @inject(TYPES.DbClient) dbClient: DbClient,
         @inject(TYPES.EnvConfig) private envConfig: EnvConfig) {
+            super(dbClient);
+    }
+
+    protected get collectionName(): string {
+        return this.envConfig.dbUnitsCollection;
     }
 
     public async get() : Promise<UnitEntity[]> {
@@ -48,13 +53,10 @@ export class UnitsRepository {
             description: unitUpdate.description,
             foundationDate: unitUpdate.foundationDate
         }};
+
         return collection.findOneAndUpdate(
             {_id: new ObjectId(id)},
             updateQuery,
             {returnDocument: ReturnDocument.AFTER});
-    }
-
-    private getCollection() : Collection<UnitEntity> {
-        return this.dbClient.db.collection<UnitEntity>(this.envConfig.dbUnitsColection);
     }
 }

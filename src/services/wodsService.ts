@@ -1,90 +1,38 @@
 import { inject, injectable } from 'inversify';
-import { WodHonorship } from '../enums/wodHonorship';
 import { Wod } from '../models/wod';
 import { TYPES } from '../types';
-import { DbClient } from '../dal/dbConnection';
-import { EnvConfig } from '../config/environment';
+import { WodsRepository } from '../dal/repositories/wodsRepository';
+import { WodCreateRequest } from '../apiRequests/wodCreateRequest';
+import { WodUpdateRequest } from '../apiRequests/wodUpdateRequest';
+import { toEntity, toModel } from '../mappings/wodsMapper';
 
 @injectable()
 export default class WodsService {
-    private wods: Wod[];
-
     constructor(
-        @inject(TYPES.DbClient) private dbClient: DbClient,
-        @inject(TYPES.EnvConfig) private envConfig: EnvConfig
+        @inject(TYPES.WodsRepository) private wodsRepository: WodsRepository,
     ) {
-        this.wods = [
-            {
-                id: 1,
-                name: 'Test WOD 1',
-                description: 'Test WOD 1 description',
-                imageUrl: '',
-                honorship: [WodHonorship.Hero, WodHonorship.Memorial],
-                scheme: 'Test WOD scheme',
-                createdAt: new Date(Date.now()),
-                wodDate: new Date(Date.now()),
-                isDeleted: false
-            },
-            {
-                id: 2,
-                name: 'Test WOD 2',
-                description: 'Test WOD 2 description',
-                imageUrl: '',
-                honorship: [WodHonorship.Memorial],
-                scheme: 'Test WOD scheme',
-                createdAt: new Date(Date.now()),
-                wodDate: new Date(Date.now()),
-                isDeleted: false
-            },
-            {
-                id: 3,
-                name: 'Test WOD 3',
-                description: 'Test WOD 3 description',
-                imageUrl: '',
-                honorship: [WodHonorship.Hero],
-                scheme: 'Test WOD scheme',
-                createdAt: new Date(Date.now()),
-                wodDate: new Date(Date.now()),
-                isDeleted: false
-            }
-        ]
     }
-    public async getWods(): Promise<Wod[]> {
-        var a = await this.dbClient.db.collection(this.envConfig.dbWodsCollection)
-            .find({})
-            .toArray();
-        return this.wods;
+    public async get(): Promise<Wod[]> {
+        return this.wodsRepository.get()
+            .then(entities => entities.map(toModel));
     }
 
-    public getWod(id: number): Wod | undefined {
-        var wod = this.wods.find(w => w.id == id);
-
-        return wod;
+    public getById(id: string): Promise<Wod | null> {
+        return this.wodsRepository.getById(id)
+            .then(entity => entity == null ? null : toModel(entity));
     }
 
-    public createWod(wod: Wod): Wod {
-        wod.createdAt = new Date(Date.now());
-        wod.isDeleted = false;
-
-        this.wods.push(wod);
-
-        return wod;
+    public delete(id: string): Promise<void> {
+        return this.wodsRepository.delete(id);
     }
 
-    public updateWod(id: number, wodUpdate: Wod): Wod | undefined{
-        var wodIndex = this.wods.findIndex(wod => wod.id == id);
-        var wodExists = wodIndex !== -1;
-        if(wodExists) {
-            this.wods[wodIndex] = wodUpdate;
-        } 
-        
-        return wodExists ? wodUpdate : undefined;
+    public create(createRequest: WodCreateRequest): Promise<Wod> {
+        return this.wodsRepository.create(toEntity(createRequest))
+            .then(entity => toModel(entity));
     }
 
-    public deleteWod(id: number) {
-        var wod = this.wods.find(w => w.id == id);
-        if(wod) {
-            wod.isDeleted = true;
-        }
+    public update(id: string, wodUpdate: WodUpdateRequest): Promise<Wod | null> {
+        return this.wodsRepository.update(id, wodUpdate)
+            .then(entity => entity == null ? null : toModel(entity));
     }
 }

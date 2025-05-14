@@ -5,7 +5,6 @@ import { EnvConfig } from "../../config/environment";
 import { UnitEntity } from "../entities/unitEntity";
 import { Collection, ObjectId, ReturnDocument } from "mongodb";
 import { UnitUpdateRequest } from "../../apiRequests/unitUpdateRequest";
-import { UnitCreateRequest } from "../../apiRequests/unitCreateRequest";
 
 @injectable()
 export class UnitsRepository {
@@ -55,6 +54,6 @@ export class UnitsRepository {
     }
 
     private getCollection() : Collection<UnitEntity> {
-        return this.dbClient.db.collection<UnitEntity>(this.envConfig.dbUnitsColection);
+        return this.dbClient.db.collection<UnitEntity>(this.envConfig.dbUnitsCollection);
     }
 }

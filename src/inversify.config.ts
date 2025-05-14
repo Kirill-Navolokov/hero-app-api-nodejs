@@ -9,6 +9,7 @@ import UnitsRoutes from "./routes/unitsRoutes";
 import { UnitsController } from "./controllers/unitsController";
 import UnitsService from "./services/unitsService";
 import { UnitsRepository } from "./dal/repositories/unitsRepository";
+import { WodsRepository } from "./dal/repositories/wodsRepository";
 
 class IoCContainer extends Container {
     constructor() {
@@ -41,6 +42,7 @@ class IoCContainer extends Container {
 
     private registerRepositories() {
         this.bind<UnitsRepository>(TYPES.UnitsRepository).to(UnitsRepository);
+        this.bind<WodsRepository>(TYPES.WodsRepository).to(WodsRepository);
     }
 
     private registerInfrastructure() {

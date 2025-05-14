@@ -37,7 +37,7 @@ export class UnitsController {
         res.status(200).json(createdUnit);
     }
 
-    public updateUnit: RequestHandler<{id: string}, any, UnitUpdateRequest> = async (req, res, next) => {
+    public updateUnit: RequestHandler<{id: string}> = async (req, res, next) => {
         var unitId = req.params.id;
         var updateRequest = req.body as UnitUpdateRequest;
         var updatedUnit = await this.unitsService.update(unitId, updateRequest);

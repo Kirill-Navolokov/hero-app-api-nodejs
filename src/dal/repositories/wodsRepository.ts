@@ -2,25 +2,13 @@ import { inject, injectable } from "inversify";
 import { TYPES } from "../../types";
 import { DbClient } from "../dbConnection";
 import { EnvConfig } from "../../config/environment";
-import { Collection, ObjectId, ReturnDocument } from "mongodb";
+import { ObjectId, ReturnDocument } from "mongodb";
 import { WodEntity } from "../entities/wodEntity";
 import { WodUpdateRequest } from "../../apiRequests/wodUpdateRequest";
+import { BaseRepository } from "./baseRepository";
 
 @injectable()
-abstract class BaseRepo<TEntity extends object> {
-    constructor(
-        @inject(TYPES.DbClient) private dbClient: DbClient) {
-    }
-
-    protected abstract get collectionName(): string;
-
-    protected getCollection(): Collection<TEntity> {
-        return this.dbClient.db.collection<TEntity>(this.collectionName);
-    }
-}
-
-@injectable()
-export class WodsRepository extends BaseRepo<WodEntity> {
+export class WodsRepository extends BaseRepository<WodEntity> {
     constructor(
         @inject(TYPES.DbClient) dbClient: DbClient,
         @inject(TYPES.EnvConfig) private envConfig: EnvConfig) {
@@ -70,13 +58,10 @@ export class WodsRepository extends BaseRepo<WodEntity> {
             imageUrl: wodUpdate.imageUrl,
             backgroundUrl: wodUpdate.backgroundUrl
         }};
+
         return collection.findOneAndUpdate(
             {_id: new ObjectId(id)},
             updateQuery,
             {returnDocument: ReturnDocument.AFTER});
     }
-
-    // private getCollection() : Collection<WodEntity> {
-    //     return this.dbClient.db.collection<WodEntity>(this.envConfig.dbWodsCollection);
-    // }
 }

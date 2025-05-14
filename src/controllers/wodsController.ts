@@ -27,7 +27,7 @@ export class WodsController {
     public deleteWod: RequestHandler<{id: string}> = async (req, res, next) => {
         await this.wodsService.delete(req.params.id);
 
-        res.status(200).send;
+        res.status(200).send();
     }
 
     public createWod: RequestHandler = async (req, res, next) => {

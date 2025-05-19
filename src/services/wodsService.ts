@@ -5,13 +5,17 @@ import { WodsRepository } from '../dal/repositories/wodsRepository';
 import { WodCreateRequest } from '../apiRequests/wodCreateRequest';
 import { WodUpdateRequest } from '../apiRequests/wodUpdateRequest';
 import { toEntity, toModel } from '../mappings/wodsMapper';
+import { UnitsRepository } from '../dal/repositories/unitsRepository';
+import { isDefined } from 'class-validator';
+import { HeroBookError } from '../helpers/heroBookError';
 
 @injectable()
 export default class WodsService {
     constructor(
         @inject(TYPES.WodsRepository) private wodsRepository: WodsRepository,
-    ) {
+        @inject(TYPES.UnitsRepository) private unitsRepository: UnitsRepository) {
     }
+
     public async get(): Promise<Wod[]> {
         return this.wodsRepository.get()
             .then(entities => entities.map(toModel));
@@ -26,13 +30,25 @@ export default class WodsService {
         return this.wodsRepository.delete(id);
     }
 
-    public create(createRequest: WodCreateRequest): Promise<Wod> {
-        return this.wodsRepository.create(toEntity(createRequest))
+    public async create(createRequest: WodCreateRequest): Promise<Wod> {
+        await this.verifyUnitExists(createRequest.unitId);
+
+        return await this.wodsRepository.create(toEntity(createRequest))
             .then(entity => toModel(entity));
     }
 
-    public update(id: string, wodUpdate: WodUpdateRequest): Promise<Wod | null> {
-        return this.wodsRepository.update(id, wodUpdate)
+    public async update(id: string, wodUpdate: WodUpdateRequest): Promise<Wod | null> {
+        await this.verifyUnitExists(wodUpdate.unitId);
+
+        return await this.wodsRepository.update(id, wodUpdate)
             .then(entity => entity == null ? null : toModel(entity));
+    }
+
+    private async verifyUnitExists(unitId?: string): Promise<void> {
+        if(isDefined(unitId)) {
+            var unit = await this.unitsRepository.getById(unitId);
+            if(unit == null)
+                throw new HeroBookError("Unit by id not found", 404)
+        }
     }
 }

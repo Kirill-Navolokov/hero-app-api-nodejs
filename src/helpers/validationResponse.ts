@@ -12,6 +12,5 @@ export class ValidationResponse {
     }
 
     message: string;
-
     details: any[]
 }

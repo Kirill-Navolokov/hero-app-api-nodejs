@@ -34,7 +34,9 @@ export class UnitsController {
     }
 
     public createUnit: RequestHandler = async (req, res, next) => {
-        var createRequest = await transformAndValidate(UnitCreateRequest, req.body as object);
+        var createRequest = await transformAndValidate(
+            UnitCreateRequest,
+            req.body as object);
         var createdUnit = await this.unitsService.create(createRequest);
 
         res.status(200).json(createdUnit);
@@ -42,7 +44,9 @@ export class UnitsController {
 
     public updateUnit: RequestHandler<{id: string}> = async (req, res, next) => {
         var unitId = req.params.id;
-        var updateRequest = await transformAndValidate(UnitUpdateRequest, req.body as object);
+        var updateRequest = await transformAndValidate(
+            UnitUpdateRequest,
+            req.body as object);
         validateEqualIds(unitId, updateRequest.id);
 
         var updatedUnit = await this.unitsService.update(unitId, updateRequest);

@@ -4,6 +4,9 @@ import { inject, injectable } from "inversify";
 import UnitsService from "../services/unitsService";
 import { UnitUpdateRequest } from "../apiRequests/unitUpdateRequest";
 import { UnitCreateRequest } from "../apiRequests/unitCreateRequest";
+import { transformAndValidate } from "class-transformer-validator";
+import { equals, notEquals, ValidationError } from "class-validator";
+import { validateEqualIds } from "../helpers/functions";
 
 @injectable()
 export class UnitsController {
@@ -31,7 +34,9 @@ export class UnitsController {
     }
 
     public createUnit: RequestHandler = async (req, res, next) => {
-        var createRequest = req.body as UnitCreateRequest;
+        var createRequest = await transformAndValidate(
+            UnitCreateRequest,
+            req.body as object);
         var createdUnit = await this.unitsService.create(createRequest);
 
         res.status(200).json(createdUnit);
@@ -39,7 +44,11 @@ export class UnitsController {
 
     public updateUnit: RequestHandler<{id: string}> = async (req, res, next) => {
         var unitId = req.params.id;
-        var updateRequest = req.body as UnitUpdateRequest;
+        var updateRequest = await transformAndValidate(
+            UnitUpdateRequest,
+            req.body as object);
+        validateEqualIds(unitId, updateRequest.id);
+
         var updatedUnit = await this.unitsService.update(unitId, updateRequest);
         var statusCode = updatedUnit == null ? 404 : 200;
         var result = updatedUnit == null ? `No units found by id: ${req.params.id}` : updatedUnit;

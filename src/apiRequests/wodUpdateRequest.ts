@@ -1,11 +1,35 @@
-export type WodUpdateRequest = {
-    id: string;
+import { IsDateString, isDefined, IsDefined, IsNotEmpty, IsNumber, IsUrl, Max, MaxLength } from "class-validator";
+
+export class WodUpdateRequest {
+    @IsDefined()
+    id!: string;
+
     unitId?: string;
-    name: string;
-    description: string;
-    scheme: string;
-    executionDate: Date;
-    type: number;
+
+    @IsDefined()
+    @MaxLength(20)
+    name!: string;
+
+    @IsDefined()
+    @MaxLength(1000)
+    description!: string;
+
+    @IsDefined()
+    @MaxLength(1000)
+    scheme!: string;
+
+    @IsDefined()
+    @IsDateString()
+    executionDate!: Date;
+
+    @IsDefined()
+    @IsNumber()
+    @Max(2)
+    type!: number;
+
+    @IsUrl()
     imageUrl?: string;
+
+    @IsUrl()
     backgroundUrl?: string;
 }

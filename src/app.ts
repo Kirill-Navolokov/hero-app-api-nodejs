@@ -11,6 +11,7 @@ import { DbClient } from './dal/dbConnection';
 import UnitsRoutes from './routes/unitsRoutes';
 import 'express-async-errors'
 import { exceptionMiddleware } from './middlewares/exceptionMiddleware';
+import AuthRoutes from './routes/authRoutes';
 
 export default class App {
     private readonly app: Application;
@@ -48,7 +49,8 @@ export default class App {
     private getRoutes(): Route[] {
         return [
             iocContainer.get<WodsRoutes>(TYPES.WodsRoutes),
-            iocContainer.get<UnitsRoutes>(TYPES.UnitsRoutes)
+            iocContainer.get<UnitsRoutes>(TYPES.UnitsRoutes),
+            iocContainer.get<AuthRoutes>(TYPES.AuthRoutes)
         ];
     }
 

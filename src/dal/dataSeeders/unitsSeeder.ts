@@ -1,6 +1,6 @@
 import { Db, ObjectId } from "mongodb";
 import { BaseSeeder } from "./baseSeeder";
-import { DataSeeder } from "./dateSeeder";
+import { DataSeeder } from "./dataSeeder";
 import { UnitEntity } from "../entities/unitEntity";
 import { EnvConfig } from "../../config/environment";
 import { seedingConstants } from "./seedingConstants";
@@ -16,7 +16,7 @@ export class UnitsSeeder extends BaseSeeder implements DataSeeder {
         await this.SeedEntities(unitsCollection);
     }
 
-    getSeedData(): any[] {
+    async getSeedData(): Promise<any[]> {
         var data: UnitEntity[] = [
             {
                 _id: new ObjectId(seedingConstants.units.gur),

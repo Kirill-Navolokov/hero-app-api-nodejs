@@ -9,6 +9,12 @@ const TYPES = {
     UnitsController: Symbol.for('UnitsController'),
     UnitsRoutes: Symbol.for('UnitsRoutes'),
 
+    UsersRepository: Symbol.for('UsersRepository'),
+
+    AuthService: Symbol.for('AuthService'),
+    AuthController: Symbol.for('AuthController'),
+    AuthRoutes: Symbol.for('AuthRoutes'),
+
     EnvConfig: Symbol.for('EnvConfig'),
     DbClient: Symbol.for('DbClient')
 }

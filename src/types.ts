@@ -10,6 +10,7 @@ const TYPES = {
     UnitsRoutes: Symbol.for('UnitsRoutes'),
 
     UsersRepository: Symbol.for('UsersRepository'),
+    UsersService: Symbol.for('UsersService'),
 
     AuthService: Symbol.for('AuthService'),
     AuthController: Symbol.for('AuthController'),

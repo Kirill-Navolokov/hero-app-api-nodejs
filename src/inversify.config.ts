@@ -14,6 +14,7 @@ import { AuthController } from "./controllers/authController";
 import { AuthService } from "./services/authService";
 import { UsersRepository } from "./dal/repositories/usersRepository";
 import AuthRoutes from "./routes/authRoutes";
+import { UsersService } from "./services/usersService";
 
 class IoCContainer extends Container {
     constructor() {
@@ -36,21 +37,22 @@ class IoCContainer extends Container {
     }
 
     private registerControllers() {
-        this.bind<WodsController>(TYPES.WodsController).to(WodsController);
-        this.bind<UnitsController>(TYPES.UnitsController).to(UnitsController);
-        this.bind<AuthController>(TYPES.AuthController).to(AuthController);
+        this.bind<WodsController>(TYPES.WodsController).to(WodsController).inSingletonScope();
+        this.bind<UnitsController>(TYPES.UnitsController).to(UnitsController).inSingletonScope();
+        this.bind<AuthController>(TYPES.AuthController).to(AuthController).inSingletonScope();
     }
 
     private registerServices() {
-        this.bind<WodsService>(TYPES.WodsService).to(WodsService);
-        this.bind<UnitsService>(TYPES.UnitsService).to(UnitsService);
-        this.bind<AuthService>(TYPES.AuthService).to(AuthService);
+        this.bind<WodsService>(TYPES.WodsService).to(WodsService).inRequestScope();
+        this.bind<UnitsService>(TYPES.UnitsService).to(UnitsService).inRequestScope();
+        this.bind<AuthService>(TYPES.AuthService).to(AuthService).inRequestScope();
+        this.bind<UsersService>(TYPES.UsersService).to(UsersService).inRequestScope();
     }
 
     private registerRepositories() {
-        this.bind<UnitsRepository>(TYPES.UnitsRepository).to(UnitsRepository);
-        this.bind<WodsRepository>(TYPES.WodsRepository).to(WodsRepository);
-        this.bind<UsersRepository>(TYPES.UsersRepository).to(UsersRepository);
+        this.bind<UnitsRepository>(TYPES.UnitsRepository).to(UnitsRepository).inRequestScope();
+        this.bind<WodsRepository>(TYPES.WodsRepository).to(WodsRepository).inRequestScope();
+        this.bind<UsersRepository>(TYPES.UsersRepository).to(UsersRepository).inRequestScope();
     }
 
     private registerInfrastructure() {

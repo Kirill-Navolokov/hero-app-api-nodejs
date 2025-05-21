@@ -1,5 +1,5 @@
 import { Db, ObjectId } from "mongodb";
-import { DataSeeder } from "./dateSeeder";
+import { DataSeeder } from "./dataSeeder";
 import { EnvConfig } from "../../config/environment";
 import { WodEntity } from "../entities/wodEntity";
 import { seedingConstants } from "./seedingConstants";
@@ -16,7 +16,7 @@ export class WodsSeeder extends BaseSeeder implements DataSeeder {
         await this.SeedEntities(wodsCollection);
     }
 
-    getSeedData() : any[] {
+    async getSeedData() : Promise<any[]> {
         var data: WodEntity[] = [
             {
                 _id: new ObjectId(seedingConstants.wods.mali),

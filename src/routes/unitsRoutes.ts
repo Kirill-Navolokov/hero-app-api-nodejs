@@ -3,6 +3,7 @@ import { Route } from './route';
 import { TYPES } from '../types';
 import { inject, injectable } from 'inversify';
 import { UnitsController } from '../controllers/unitsController';
+import { adminAuthMiddleware } from '../middlewares/authMiddleware';
 
 @injectable()
 export default class UnitsRoutes implements Route {
@@ -19,8 +20,8 @@ export default class UnitsRoutes implements Route {
     mapRoutes(): void {
         this.router.get('/', this.unitsController.getUnits);
         this.router.get('/:id', this.unitsController.getUnit);
-        this.router.post('/', this.unitsController.createUnit);
-        this.router.patch('/:id', this.unitsController.updateUnit);
-        this.router.delete('/:id', this.unitsController.deleteUnit);
+        this.router.post('/', adminAuthMiddleware, this.unitsController.createUnit);
+        this.router.patch('/:id', adminAuthMiddleware, this.unitsController.updateUnit);
+        this.router.delete('/:id', adminAuthMiddleware, this.unitsController.deleteUnit);
     }
 }

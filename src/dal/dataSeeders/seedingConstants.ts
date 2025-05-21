@@ -8,5 +8,8 @@ export const seedingConstants = {
         gur: '567bcfa8bb635b859e2ca61a',
         azov: '765bcfa8bb635b859e2ca61a',
         daVinciWolfs: '675bcfa8bb635b859e2ca61a'
+    },
+    users: {
+        admin: '936bcfa2bb142b839e7ca84a'
     }
 };

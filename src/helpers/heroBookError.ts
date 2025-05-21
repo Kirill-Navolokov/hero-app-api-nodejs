@@ -7,4 +7,9 @@ export class HeroBookError extends Error {
 
     status!: number;
     errors?: any[]
+
+    public static fromUnauthorized(message?: string): HeroBookError {
+        message = message == undefined ? "Unauthorized" : message;
+        return new HeroBookError(message, 401);
+    }
 }

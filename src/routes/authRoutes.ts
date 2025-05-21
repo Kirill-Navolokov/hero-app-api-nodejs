@@ -18,5 +18,6 @@ export default class AuthRoutes implements Route {
 
     mapRoutes(): void {
         this.router.post('/login', this.authController.login);
+        this.router.post('/signup', this.authController.signUp);
     }
 }

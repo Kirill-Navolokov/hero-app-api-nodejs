@@ -1,4 +1,5 @@
 import { equals, ValidationError } from "class-validator";
+import bcrypt from 'bcrypt';
 
 /**
  * Checks whether provided ids are the same
@@ -16,4 +17,8 @@ export function validateEqualIds(routeId: string, requestBodyId: string) {
     validationError.constraints = { "notEquals": "Id from route and request body are not the same" };
 
     throw [validationError];
+}
+
+export function encryptPassword(password: string): Promise<string> {
+    return bcrypt.hash(password, 10);
 }

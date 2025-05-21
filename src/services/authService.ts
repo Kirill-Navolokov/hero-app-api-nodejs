@@ -28,7 +28,7 @@ export class AuthService {
         var token = jwt.sign(
             {email: user.email, username: user.username, roles: user.roles},
             this.envConfig.jwtSecretKey,
-            {expiresIn: '15m', algorithm: "HS256"});
+            {expiresIn: '5m', algorithm: "HS256"});
 
         return token;
     }

@@ -5,7 +5,6 @@ import UnitsService from "../services/unitsService";
 import { UnitUpdateRequest } from "../apiRequests/unitUpdateRequest";
 import { UnitCreateRequest } from "../apiRequests/unitCreateRequest";
 import { transformAndValidate } from "class-transformer-validator";
-import { equals, notEquals, ValidationError } from "class-validator";
 import { validateEqualIds } from "../helpers/functions";
 
 @injectable()

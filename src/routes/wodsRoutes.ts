@@ -3,6 +3,7 @@ import { WodsController } from '../controllers/wodsController';
 import { Route } from './route';
 import { TYPES } from '../types';
 import { inject, injectable } from 'inversify';
+import { adminAuthMiddleware } from '../middlewares/authMiddleware';
 
 @injectable()
 export default class WodsRoutes implements Route {
@@ -20,8 +21,8 @@ export default class WodsRoutes implements Route {
     mapRoutes(): void {
         this.router.get('/', this.wodsController.getWods);
         this.router.get('/:id', this.wodsController.getWod);
-        this.router.post('/', this.wodsController.createWod);
-        this.router.patch('/:id', this.wodsController.updateWod);
-        this.router.delete('/:id', this.wodsController.deleteWod);
+        this.router.post('/', adminAuthMiddleware, this.wodsController.createWod);
+        this.router.patch('/:id', adminAuthMiddleware, this.wodsController.updateWod);
+        this.router.delete('/:id', adminAuthMiddleware, this.wodsController.deleteWod);
     }
 }

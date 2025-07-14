@@ -10,5 +10,7 @@ export class EnvConfig {
     public get dbWodsCollection() {return process.env.DB_WODS_COLLECTION as string;}
     public get dbUnitsCollection() {return process.env.DB_UNITS_COLLECTION as string;}
     public get dbUsersCollection() {return process.env.DB_USERS_COLLECTION as string;}
+    public get dbWorkoutsCollection() {return process.env.DB_WORKOUTS_COLLECTION as string}
     public get adminPassword() {return process.env.ADMIN_PASSWORD as string;}
+    public get googleClientId() {return process.env.GOOGLE_CLIENT_ID as string;}
 }

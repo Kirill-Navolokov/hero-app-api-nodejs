@@ -22,7 +22,21 @@ export class UsersService {
         return this.usersRepository.checkExists(email, username);
     }
 
-    public async create(signUpRequest: SignUpRequest) : Promise<User> {
+    // public async createOAuthUser(): Promise<User> {
+    //     var userEntity: UserEntity = {
+    //         _id: new ObjectId(),
+    //         email: signUpRequest.email,
+    //         username: signUpRequest.username,
+    //         encryptedPassword: encryptedPassword,
+    //         roles: []
+    //     };
+    //     var newUser = await this.usersRepository.create(userEntity)
+    //         .then(toModel);
+
+    //     return newUser;
+    // }
+
+    public async create(signUpRequest: SignUpRequest): Promise<User> {
         var encryptedPassword = await encryptPassword(signUpRequest.password);
         var userEntity: UserEntity = {
             _id: new ObjectId(),

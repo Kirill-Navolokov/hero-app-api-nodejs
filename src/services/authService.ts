@@ -9,6 +9,10 @@ import { SignUpRequest } from "../apiRequests/signUpRequest";
 import { UsersService } from "./usersService";
 import { SignUpResponse } from "../models/signUpResponse";
 import { User } from "../models/user";
+import { LoginResponse } from "../models/loginResponse";
+import type { StringValue } from "ms";
+import { TokensResponse } from "../models/tokensResponse";
+import { UserEntity } from "../dal/entities/userEntity";
 
 @injectable()
 export class AuthService {
@@ -17,7 +21,7 @@ export class AuthService {
         @inject(TYPES.EnvConfig) private envConfig: EnvConfig) {
     }
 
-    public async authenticateUser(loginRequest: LoginRequest) : Promise<string> {
+    public async authenticateUser(loginRequest: LoginRequest) : Promise<LoginResponse> {
         var user = await this.usersService.getByEmail(loginRequest.email);
         if(!user)
             throw HeroBookError.fromUnauthorized();
@@ -28,7 +32,16 @@ export class AuthService {
         if(!isPasswordCorrect)
             throw HeroBookError.fromUnauthorized();
 
-        return this.generateAccessToken(user);
+        return {
+            userInfo: {
+                email: user.email,
+                username: user.username
+            },
+            tokens: {
+                accessToken: this.generateAccessToken(user, '1h'),
+                refreshToken: this.generateAccessToken(user, '2h')
+            }
+        }
     }
 
     public async signUp(signUpRequest: SignUpRequest): Promise<SignUpResponse> {
@@ -40,11 +53,10 @@ export class AuthService {
             var createdUser = await this.usersService.create(signUpRequest);
             return {
                 user: {
-                    id: createdUser.id,
                     email: createdUser.email,
                     username: createdUser.username
                 },
-                accessToken: this.generateAccessToken(createdUser)
+                accessToken: this.generateAccessToken(createdUser, '5m')
             };
         } else {
             var message = user.email.toLowerCase() == signUpRequest.email.toLowerCase()
@@ -55,11 +67,21 @@ export class AuthService {
         }
     }
 
-    private generateAccessToken(user: User): string {
+    public async refreshTokens(refreshToken: string): Promise<TokensResponse> {
+        var userEntity = jwt.verify(refreshToken, this.envConfig.jwtSecretKey) as UserEntity;
+        var user = await this.usersService.getByEmail(userEntity.email);
+
+        return {
+            accessToken: this.generateAccessToken(user!, '5m'),
+            refreshToken: this.generateAccessToken(user!, '10m')
+        }
+    }
+
+    private generateAccessToken(user: User, expiration: StringValue): string {
         var token = jwt.sign(
             {id: user.id, email: user.email, username: user.username, roles: user.roles},
             this.envConfig.jwtSecretKey,
-            {expiresIn: '5m', algorithm: "HS256"});
+            {expiresIn: expiration, algorithm: "HS256"});
         return token;
     }
 }

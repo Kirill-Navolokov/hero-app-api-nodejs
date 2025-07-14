@@ -16,6 +16,8 @@ const TYPES = {
     AuthController: Symbol.for('AuthController'),
     AuthRoutes: Symbol.for('AuthRoutes'),
 
+    WorkoutsRepository: Symbol.for('WorkoutsRepository'),
+
     EnvConfig: Symbol.for('EnvConfig'),
     DbClient: Symbol.for('DbClient')
 }

@@ -54,4 +54,11 @@ export class UnitsController {
 
         res.status(statusCode).json(result);
     }
+
+    public getWods: RequestHandler<{id: string}> = async (req, res, next) => {
+        var unitId = req.params.id;
+        var wods = await this.unitsService.getWods(unitId);
+
+        res.status(200).json(wods);
+    }
 }

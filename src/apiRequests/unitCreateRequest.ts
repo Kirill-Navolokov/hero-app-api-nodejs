@@ -1,4 +1,4 @@
-import { IsDateString, IsDefined, IsNotEmpty, MaxLength } from "class-validator";
+import { IsDateString, IsDefined, IsNotEmpty, IsNumber, Max, MaxLength } from "class-validator";
 
 export class UnitCreateRequest {
     @IsNotEmpty()
@@ -12,4 +12,9 @@ export class UnitCreateRequest {
     @IsDefined()
     @IsDateString()
     foundationDate!: Date;
+
+    @IsDefined()
+    @IsNumber()
+    @Max(1)
+    type!: number;
 }

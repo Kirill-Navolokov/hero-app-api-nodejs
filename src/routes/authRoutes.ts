@@ -3,6 +3,7 @@ import { Route } from "./route";
 import { inject, injectable } from "inversify";
 import { TYPES } from "../types";
 import { AuthController } from "../controllers/authController";
+import { authMiddleware } from "../middlewares/authMiddleware";
 
 @injectable()
 export default class AuthRoutes implements Route {
@@ -19,5 +20,6 @@ export default class AuthRoutes implements Route {
     mapRoutes(): void {
         this.router.post('/login', this.authController.login);
         this.router.post('/signup', this.authController.signUp);
+        this.router.post('/token-refresh', authMiddleware, this.authController.tokenRefresh);
     }
 }

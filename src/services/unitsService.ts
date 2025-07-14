@@ -2,14 +2,18 @@ import { inject, injectable } from "inversify";
 import { TYPES } from "../types";
 import { Unit } from "../models/unit";
 import { toEntity, toModel } from "../mappings/unitsMapper";
+import { toWorkoutModel } from "../mappings/workoutsMapper";
 import { UnitsRepository } from "../dal/repositories/unitsRepository";
 import { UnitUpdateRequest } from "../apiRequests/unitUpdateRequest";
 import { UnitCreateRequest } from "../apiRequests/unitCreateRequest";
+import { Workout } from "../models/workout";
+import { WorkoutsRepository } from "../dal/repositories/workoutsRepository";
 
 @injectable()
 export default class UnitsService {
     constructor(
-        @inject(TYPES.UnitsRepository) private unitsRepository: UnitsRepository) {
+        @inject(TYPES.UnitsRepository) private unitsRepository: UnitsRepository,
+        @inject(TYPES.WorkoutsRepository) private workoutsRepository: WorkoutsRepository) {
     }
 
     public async get() : Promise<Unit[]> {
@@ -34,5 +38,10 @@ export default class UnitsService {
     public async update(id: string, unitUpdate: UnitUpdateRequest): Promise<Unit | null> {
         return this.unitsRepository.update(id, unitUpdate)
             .then(entity => entity == null ? null : toModel(entity));
+    }
+
+    public async getWods(unitId: string): Promise<Workout[]> {
+        return this.workoutsRepository.getByUnit(unitId)
+            .then(entities => entities.map(toWorkoutModel));
     }
 }

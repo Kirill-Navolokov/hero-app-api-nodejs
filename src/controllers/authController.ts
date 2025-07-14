@@ -15,9 +15,9 @@ export class AuthController {
         var loginRequest = await transformAndValidate(
             LoginRequest,
             req.body as object);
-        var token = await this.authService.authenticateUser(loginRequest);
+        var loginResponse = await this.authService.authenticateUser(loginRequest);
 
-        res.status(200).json({accessToken: token});
+        res.status(200).json(loginResponse);
     }
 
     public signUp: RequestHandler = async (req, res, next) => {
@@ -27,5 +27,12 @@ export class AuthController {
         var response = await this.authService.signUp(signUpRequest);
 
         res.status(200).json(response);
+    }
+
+    public tokenRefresh: RequestHandler = async (req, res, next) => {
+        var refreshToken = req.headers.authorization!.split(' ')[1];
+        var tokenRefreshResponse = await this.authService.refreshTokens(refreshToken);
+
+        res.status(200).json(tokenRefreshResponse);
     }
 }

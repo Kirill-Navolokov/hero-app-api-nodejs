@@ -15,6 +15,7 @@ import { AuthService } from "./services/authService";
 import { UsersRepository } from "./dal/repositories/usersRepository";
 import AuthRoutes from "./routes/authRoutes";
 import { UsersService } from "./services/usersService";
+import { WorkoutsRepository } from "./dal/repositories/workoutsRepository";
 
 class IoCContainer extends Container {
     constructor() {
@@ -53,6 +54,7 @@ class IoCContainer extends Container {
         this.bind<UnitsRepository>(TYPES.UnitsRepository).to(UnitsRepository).inRequestScope();
         this.bind<WodsRepository>(TYPES.WodsRepository).to(WodsRepository).inRequestScope();
         this.bind<UsersRepository>(TYPES.UsersRepository).to(UsersRepository).inRequestScope();
+        this.bind<WorkoutsRepository>(TYPES.WorkoutsRepository).to(WorkoutsRepository).inRequestScope();
     }
 
     private registerInfrastructure() {

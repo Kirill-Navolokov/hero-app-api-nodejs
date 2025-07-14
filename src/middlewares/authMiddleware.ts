@@ -6,9 +6,12 @@ import { EnvConfig } from "../config/environment";
 import { TYPES } from "../types";
 import { UserEntity } from "../dal/entities/userEntity";
 import { rolesConstants } from "../helpers/rolesConstants";
+import { OAuth2Client } from "google-auth-library";
+import { UsersService } from "../services/usersService";
+import { User } from "../models/user";
 
-export const adminAuthMiddleware = (req: Request, res: Response, next: NextFunction) => {
-    var user = authenticateUser(req);
+export const adminAuthMiddleware = async (req: Request, res: Response, next: NextFunction) => {
+    var user = await authenticateUser(req);
     var index = user.roles?.indexOf(rolesConstants.admin);
     if(index == undefined || index == -1)
         throw HeroBookError.fromUnauthorized("Not enough rights");
@@ -16,23 +19,29 @@ export const adminAuthMiddleware = (req: Request, res: Response, next: NextFunct
     next();
 }
 
-export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
-    var user = authenticateUser(req);
+export const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
+    var user = await authenticateUser(req);
 
     next();
 }
 
-function authenticateUser(req: Request): UserEntity {
-    var authHeader = req.header("authorization");
+async function authenticateUser(req: Request): Promise<UserEntity> {
+    var authHeader = req.header("Authorization");
+    console.log(req.originalUrl);
     if(!authHeader)
         throw HeroBookError.fromUnauthorized();
 
     var token = authHeader.split(' ')[1];
     var envConfig = iocContainer.get<EnvConfig>(TYPES.EnvConfig);
-    var user:UserEntity;
 
     try {
-        user = jwt.verify(token, envConfig.jwtSecretKey) as UserEntity;
+        // if(await tryGoogleAuth(token, envConfig.googleClientId)) {
+            
+        // }
+
+        var user = jwt.verify(token, envConfig.jwtSecretKey) as UserEntity;
+
+        return user;
     } catch(error) {
         var message = undefined;
         if(error instanceof TokenExpiredError)
@@ -40,6 +49,32 @@ function authenticateUser(req: Request): UserEntity {
 
         throw HeroBookError.fromUnauthorized(message);
     }
-
-    return user;
 }
+
+// async function tryGoogleAuth(token: string, googleClientId: string): Promise<UserEntity|null> {
+//     try
+//     {
+//         var oauthClient = new OAuth2Client();
+//         var loginTicket = await oauthClient.verifyIdToken({
+//             idToken: token,
+//             audience: googleClientId
+//         });
+//         var payload = loginTicket.getPayload();
+//         if(!payload)
+//             return null;
+
+//         var userService = iocContainer.get<UsersService>(TYPES.UsersService);
+//         var user = await userService.checkExists(payload.email!, '');
+//         if(user)
+//             return user;
+//         var a: SignInRequest = {
+
+//         }
+//         userService.create()
+
+//         return true;
+//     } catch(error) {
+//         console.log(error);
+//         return null;
+//     }
+// }

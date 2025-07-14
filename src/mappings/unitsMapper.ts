@@ -8,8 +8,10 @@ export function toModel(entity: UnitEntity): Unit {
         id: entity._id.toString(),
         name: entity.name,
         description: entity.description,
+        type: entity.type,
         foundationDate: entity.foundationDate,
-        imageUrl: entity.imageUrl
+        imageUrl: entity.imageUrl,
+        socialNetworks: entity.socialNetworks
     };
 }
 
@@ -18,6 +20,7 @@ export function toEntity(createRequest: UnitCreateRequest): UnitEntity {
         _id: new ObjectId(),
         name: createRequest.name,
         description: createRequest.description,
+        type: createRequest.type,
         foundationDate: createRequest.foundationDate,
         imageUrl: ''
     };

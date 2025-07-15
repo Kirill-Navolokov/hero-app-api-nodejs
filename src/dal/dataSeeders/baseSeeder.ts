@@ -1,3 +1,4 @@
+import { error } from "console";
 import { Collection, Document } from "mongodb";
 
 export abstract class BaseSeeder {
@@ -9,7 +10,7 @@ export abstract class BaseSeeder {
                 .then(res => {
                     if(res == null)
                         collection.insertOne(entity);
-                })
+                });
         }
     }
 }

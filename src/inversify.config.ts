@@ -16,6 +16,10 @@ import { UsersRepository } from "./dal/repositories/usersRepository";
 import AuthRoutes from "./routes/authRoutes";
 import { UsersService } from "./services/usersService";
 import { WorkoutsRepository } from "./dal/repositories/workoutsRepository";
+import { SupportService } from "./services/supportService";
+import { SupportController } from "./controllers/supportController";
+import { SupportRepository } from "./dal/repositories/supportRepository";
+import SupportRoutes from "./routes/supportRoutes";
 
 class IoCContainer extends Container {
     constructor() {
@@ -35,12 +39,14 @@ class IoCContainer extends Container {
         this.bind<WodsRoutes>(TYPES.WodsRoutes).to(WodsRoutes);
         this.bind<UnitsRoutes>(TYPES.UnitsRoutes).to(UnitsRoutes);
         this.bind<AuthRoutes>(TYPES.AuthRoutes).to(AuthRoutes);
+        this.bind<SupportRoutes>(TYPES.SupportRoutes).to(SupportRoutes);
     }
 
     private registerControllers() {
         this.bind<WodsController>(TYPES.WodsController).to(WodsController).inSingletonScope();
         this.bind<UnitsController>(TYPES.UnitsController).to(UnitsController).inSingletonScope();
         this.bind<AuthController>(TYPES.AuthController).to(AuthController).inSingletonScope();
+        this.bind<SupportController>(TYPES.SupportController).to(SupportController).inSingletonScope();
     }
 
     private registerServices() {
@@ -48,6 +54,7 @@ class IoCContainer extends Container {
         this.bind<UnitsService>(TYPES.UnitsService).to(UnitsService).inRequestScope();
         this.bind<AuthService>(TYPES.AuthService).to(AuthService).inRequestScope();
         this.bind<UsersService>(TYPES.UsersService).to(UsersService).inRequestScope();
+        this.bind<SupportService>(TYPES.SupportService).to(SupportService).inRequestScope();
     }
 
     private registerRepositories() {
@@ -55,6 +62,7 @@ class IoCContainer extends Container {
         this.bind<WodsRepository>(TYPES.WodsRepository).to(WodsRepository).inRequestScope();
         this.bind<UsersRepository>(TYPES.UsersRepository).to(UsersRepository).inRequestScope();
         this.bind<WorkoutsRepository>(TYPES.WorkoutsRepository).to(WorkoutsRepository).inRequestScope();
+        this.bind<SupportRepository>(TYPES.SupportRepository).to(SupportRepository).inRequestScope();
     }
 
     private registerInfrastructure() {

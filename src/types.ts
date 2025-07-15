@@ -9,6 +9,11 @@ const TYPES = {
     UnitsController: Symbol.for('UnitsController'),
     UnitsRoutes: Symbol.for('UnitsRoutes'),
 
+    SupportController: Symbol.for('SupportController'),
+    SupportService: Symbol.for('SupportService'),
+    SupportRepository: Symbol.for('SupportRepository'),
+    SupportRoutes: Symbol.for('SupportRoutes'),
+
     UsersRepository: Symbol.for('UsersRepository'),
     UsersService: Symbol.for('UsersService'),
 

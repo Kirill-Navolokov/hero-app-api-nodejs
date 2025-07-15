@@ -12,6 +12,7 @@ import UnitsRoutes from './routes/unitsRoutes';
 import 'express-async-errors'
 import { exceptionMiddleware } from './middlewares/exceptionMiddleware';
 import AuthRoutes from './routes/authRoutes';
+import SupportRoutes from './routes/supportRoutes';
 
 export default class App {
     private readonly app: Application;
@@ -50,7 +51,8 @@ export default class App {
         return [
             iocContainer.get<WodsRoutes>(TYPES.WodsRoutes),
             iocContainer.get<UnitsRoutes>(TYPES.UnitsRoutes),
-            iocContainer.get<AuthRoutes>(TYPES.AuthRoutes)
+            iocContainer.get<AuthRoutes>(TYPES.AuthRoutes),
+            iocContainer.get<SupportRoutes>(TYPES.SupportRoutes)
         ];
     }
 

@@ -6,6 +6,7 @@ import { UnitsSeeder } from "./dataSeeders/unitsSeeder";
 import { WodsSeeder } from "./dataSeeders/wodsSeeder";
 import { UsersSeeder } from "./dataSeeders/usersSeeder";
 import { WorkoutsSeeder } from "./dataSeeders/workoutsSeeder";
+import { SupportSeeder } from "./dataSeeders/supportSeeder";
 
 @injectable()
 export class DbClient {
@@ -25,7 +26,8 @@ export class DbClient {
                 new UnitsSeeder(this.envConfig),
                 new WodsSeeder(this.envConfig),
                 new UsersSeeder(this.envConfig),
-                new WorkoutsSeeder(this.envConfig)
+                new WorkoutsSeeder(this.envConfig),
+                new SupportSeeder(this.envConfig)
             ]
             for(var seeder of seeders)
                 await seeder.Seed(this.db);

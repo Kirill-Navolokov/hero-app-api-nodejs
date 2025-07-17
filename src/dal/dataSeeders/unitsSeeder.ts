@@ -154,7 +154,8 @@ export class UnitsSeeder extends BaseSeeder implements DataSeeder {
                 socialNetworks: {
                     [SocialNetwork.website]: "https://ab3.army",
                     [SocialNetwork.instagram]: "https://www.instagram.com/ab3.army",
-                    [SocialNetwork.youtube]: "https://www.youtube.com/@ab3army"
+                    [SocialNetwork.youtube]: "https://www.youtube.com/@ab3army",
+                    [SocialNetwork.spotify]: "https://open.spotify.com/artist/5PchdBWAnESzmi6rBbxq4M?si=sMTLorLBSnu2mo7uvXkknw"
                 },
             },
             {

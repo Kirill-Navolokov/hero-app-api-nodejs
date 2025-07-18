@@ -20,7 +20,7 @@ export class WodUpdateRequest {
 
     @IsDefined()
     @IsDateString()
-    executionDate!: Date;
+    executionDate!: string;
 
     @IsDefined()
     @IsNumber()

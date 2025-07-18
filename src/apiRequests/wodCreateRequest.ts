@@ -17,7 +17,7 @@ export class WodCreateRequest {
 
     @IsDefined()
     @IsDateString()
-    executionDate!: Date;
+    executionDate!: string;
 
     @IsDefined()
     @IsNumber()

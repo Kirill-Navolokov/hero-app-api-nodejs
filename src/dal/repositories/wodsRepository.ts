@@ -53,7 +53,7 @@ export class WodsRepository extends BaseRepository<WodEntity> {
             name: wodUpdate.name,
             description: wodUpdate.description,
             scheme: wodUpdate.scheme,
-            executionDate: wodUpdate.executionDate,
+            executionDate: new Date(wodUpdate.executionDate),
             type: wodUpdate.type,
             imageUrl: wodUpdate.imageUrl,
             backgroundUrl: wodUpdate.backgroundUrl

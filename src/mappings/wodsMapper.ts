@@ -27,7 +27,7 @@ export function toEntity(createRequest: WodCreateRequest): WodEntity {
         name: createRequest.name,
         description: createRequest.description,
         scheme: createRequest.scheme,
-        executionDate: createRequest.executionDate,
+        executionDate: new Date(createRequest.executionDate),
         creationDate: new Date(),
         type: createRequest.type,
         imageUrl: ""

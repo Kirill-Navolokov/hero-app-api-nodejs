@@ -31,7 +31,7 @@ export class WodsSeeder extends BaseSeeder implements DataSeeder {
                 scheme: `10 rounds
 200 meters run
 5 devil presses (you pick weight)`,
-                executionDate: new Date(),
+                executionDate: new Date("2022-09-21"),
                 creationDate: new Date(),
                 type: 0,
                 imageUrl: "https://i1.poltava.to/uploads/2022/09/2022-09-24/mali.jpg",
@@ -51,7 +51,7 @@ export class WodsSeeder extends BaseSeeder implements DataSeeder {
 --into--
 16 calories fan bike
 8-10 incline dumbbell bench presses`,
-                executionDate: new Date(),
+                executionDate: new Date("2023-03-07"),
                 creationDate: new Date(),
                 type: 1,
                 imageUrl: "https://static.espreso.tv/uploads/photobank/215000_216000/215080_17358834_409464116086617_8068708098408737869_o_new_960x380_0.webp",
@@ -71,7 +71,7 @@ export class WodsSeeder extends BaseSeeder implements DataSeeder {
 300 meters run
 10 power cleans 65%PR
 10 toes to bar`,
-                executionDate: new Date(),
+                executionDate: new Date("2024-05-06"),
                 creationDate: new Date(),
                 type: 1,
                 imageUrl: "https://vn.20minut.ua/img/cache/news_main/news/0034/83/3382350-moe-zhittya-nichogo-ne-varte-porivnyano-z-natsieyu-istoriya-zhittya-poleglogo-geroya-nazariya-grintsevicha.jpeg?hash=2024-05-08-20-18-25",

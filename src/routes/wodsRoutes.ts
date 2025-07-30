@@ -19,8 +19,8 @@ export default class WodsRoutes implements Route {
     }
 
     mapRoutes(): void {
-        this.router.get('/', authMiddleware, this.wodsController.getWods);
-        this.router.get('/:id', authMiddleware, this.wodsController.getWod);
+        this.router.get('/', this.wodsController.getWods);
+        this.router.get('/:id', this.wodsController.getWod);
         this.router.post('/', adminAuthMiddleware, this.wodsController.createWod);
         this.router.patch('/:id', adminAuthMiddleware, this.wodsController.updateWod);
         this.router.delete('/:id', adminAuthMiddleware, this.wodsController.deleteWod);

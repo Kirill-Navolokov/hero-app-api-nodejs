@@ -20,7 +20,7 @@ export default class SupportRoutes implements Route {
     }
 
     mapRoutes(): void {
-        this.router.get('/advices', authMiddleware, this.supportController.getAdvices);
-        this.router.get('/faqs', authMiddleware, this.supportController.getFaqs);
+        this.router.get('/advices', this.supportController.getAdvices);
+        this.router.get('/faqs', this.supportController.getFaqs);
     }
 }

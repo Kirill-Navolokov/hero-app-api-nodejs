@@ -18,13 +18,13 @@ export default class UnitsRoutes implements Route {
     }
 
     mapRoutes(): void {
-        this.router.get('/', authMiddleware, this.unitsController.getUnits);
-        this.router.get('/:id', authMiddleware, this.unitsController.getUnit);
+        this.router.get('/', this.unitsController.getUnits);
+        this.router.get('/:id', this.unitsController.getUnit);
         this.router.post('/', adminAuthMiddleware, this.unitsController.createUnit);
         this.router.patch('/:id', adminAuthMiddleware, this.unitsController.updateUnit);
         this.router.delete('/:id', adminAuthMiddleware, this.unitsController.deleteUnit);
 
-        this.router.get('/:id/wods', authMiddleware, this.unitsController.getWods);
+        this.router.get('/:id/wods', this.unitsController.getWods);
         // this.router.get('/:id/wods/:wodId', authMiddleware, this.unitsController.getWod);
         // this.router.post('/:id/wods', adminAuthMiddleware, this.unitsController.createWod);
         // this.router.patch('/:id/wods/:wodId', adminAuthMiddleware, this.unitsController.updateWod);

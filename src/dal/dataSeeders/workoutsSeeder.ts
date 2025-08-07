@@ -10,10 +10,10 @@ export class WorkoutsSeeder extends BaseSeeder implements DataSeeder {
         super()
     }
 
-    async Seed(db: Db): Promise<void> {
+    async seed(db: Db): Promise<void> {
         var workoutsCollection = db.collection(this.envConfig.dbWorkoutsCollection);
 
-        await this.SeedEntities(workoutsCollection);
+        await this.seedEntities(workoutsCollection);
     }
 
     async getSeedData(): Promise<any[]> {

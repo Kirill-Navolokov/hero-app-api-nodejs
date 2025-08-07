@@ -15,16 +15,3 @@ export abstract class BaseRepository<TEntity extends object> {
         return this.dbClient.db.collection<TEntity>(this.collectionName);
     }
 }
-
-@injectable()
-export abstract class BaseRepo {
-    constructor(
-        @inject(TYPES.DbClient) private dbClient: DbClient) {
-    }
-
-    protected abstract get collectionName(): string;
-
-    protected getCollection(): Collection {
-        return this.dbClient.db.collection(this.collectionName);
-    }
-}

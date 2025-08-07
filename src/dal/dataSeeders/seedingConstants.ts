@@ -24,5 +24,19 @@ export const seedingConstants = {
         azov1: '035bcfa2bb142b143e7ca84a',
         azov2: '036bcfa2bb142b144e7ca84a',
         cgt1: '037bcfa2bb142b145e7ca84a',
+    },
+    businesses: {
+        riotDivision: '689510c297e2e1dc6b229280',
+        zakolot: '689510ce1291b1a30cc7bb83',
+        apacheShirts: '689510d5c5876007e6e7a21d',
+        trafffic: '689510eb244bb41d82005069',
+        ukraineWarRugs: '689510eb244bb41d8200506a',
+        veteranoPizza: '689510eb244bb41d8200506b'
+    },
+    businessCategories: {
+        food: '689510ffe18bfdca6d061475',
+        clothing: '689510ffe18bfdca6d061476',
+        accessories: '689510ffe18bfdca6d061477',
+        service: '6895112fd8c81be3429d7628'
     }
 };

@@ -1,7 +1,5 @@
-import { ObjectId } from "mongodb";
-
 export interface Business {
-    _id: ObjectId;
+    id: string;
     name: string;
     link: string;
     imageUrl: string;

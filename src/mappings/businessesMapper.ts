@@ -6,7 +6,7 @@ export default function toModel(
     categoriesMap: Map<string, string>
 ): Business {
     return {
-        _id: businessEntity._id,
+        id: businessEntity._id.toString(),
         name: businessEntity.name,
         link: businessEntity.link,
         imageUrl: businessEntity.imageUrl,

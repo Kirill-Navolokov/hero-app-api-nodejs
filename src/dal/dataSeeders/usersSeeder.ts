@@ -13,7 +13,7 @@ export class UsersSeeder extends BaseSeeder implements DataSeeder {
         super()
     }
 
-    async Seed(db: Db): Promise<void> {
+    async seed(db: Db): Promise<void> {
         var usersCollection = db.collection(this.envConfig.dbUsersCollection);
         if(await usersCollection.indexExists("email") == false)
             await usersCollection.createIndex(
@@ -26,7 +26,7 @@ export class UsersSeeder extends BaseSeeder implements DataSeeder {
                 {unique: true, name: "username", collation: emailUsernameIndexCollation}
             );
 
-        await this.SeedEntities(usersCollection);
+        await this.seedEntities(usersCollection);
     }
 
     async getSeedData(): Promise<any[]> {

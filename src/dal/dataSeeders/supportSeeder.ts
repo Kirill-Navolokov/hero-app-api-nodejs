@@ -8,10 +8,10 @@ export class SupportSeeder extends BaseSeeder implements DataSeeder {
         super();
     }
 
-    async Seed(db: Db): Promise<void> {
+    async seed(db: Db): Promise<void> {
         var supportCollection = db.collection(this.envConfig.dbSupportCollection);
 
-        await this.SeedEntities(supportCollection);
+        await this.seedEntities(supportCollection);
     }
 
     

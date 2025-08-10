@@ -20,6 +20,11 @@ import { SupportService } from "./services/supportService";
 import { SupportController } from "./controllers/supportController";
 import { SupportRepository } from "./dal/repositories/supportRepository";
 import SupportRoutes from "./routes/supportRoutes";
+import { BusinessesRepository } from "./dal/repositories/businessesRepository";
+import { BusinessCategoriesRepository } from "./dal/repositories/businessCategoriesRepository";
+import { BusinessesService } from "./services/businessesService";
+import { BusinessesController } from "./controllers/businessesController";
+import { BusinessesRoutes } from "./routes/businessesRoutes";
 
 class IoCContainer extends Container {
     constructor() {
@@ -40,6 +45,7 @@ class IoCContainer extends Container {
         this.bind<UnitsRoutes>(TYPES.UnitsRoutes).to(UnitsRoutes);
         this.bind<AuthRoutes>(TYPES.AuthRoutes).to(AuthRoutes);
         this.bind<SupportRoutes>(TYPES.SupportRoutes).to(SupportRoutes);
+        this.bind<BusinessesRoutes>(TYPES.BusinessesRoutes).to(BusinessesRoutes);
     }
 
     private registerControllers() {
@@ -47,6 +53,7 @@ class IoCContainer extends Container {
         this.bind<UnitsController>(TYPES.UnitsController).to(UnitsController).inSingletonScope();
         this.bind<AuthController>(TYPES.AuthController).to(AuthController).inSingletonScope();
         this.bind<SupportController>(TYPES.SupportController).to(SupportController).inSingletonScope();
+        this.bind<BusinessesController>(TYPES.BusinessesController).to(BusinessesController).inSingletonScope();
     }
 
     private registerServices() {
@@ -55,6 +62,7 @@ class IoCContainer extends Container {
         this.bind<AuthService>(TYPES.AuthService).to(AuthService).inRequestScope();
         this.bind<UsersService>(TYPES.UsersService).to(UsersService).inRequestScope();
         this.bind<SupportService>(TYPES.SupportService).to(SupportService).inRequestScope();
+        this.bind<BusinessesService>(TYPES.BusinessesService).to(BusinessesService).inRequestScope();
     }
 
     private registerRepositories() {
@@ -63,6 +71,8 @@ class IoCContainer extends Container {
         this.bind<UsersRepository>(TYPES.UsersRepository).to(UsersRepository).inRequestScope();
         this.bind<WorkoutsRepository>(TYPES.WorkoutsRepository).to(WorkoutsRepository).inRequestScope();
         this.bind<SupportRepository>(TYPES.SupportRepository).to(SupportRepository).inRequestScope();
+        this.bind<BusinessesRepository>(TYPES.BusinessesRepository).to(BusinessesRepository).inRequestScope();
+        this.bind<BusinessCategoriesRepository>(TYPES.BusinessCategoriesRepository).to(BusinessCategoriesRepository).inRequestScope();
     }
 
     private registerInfrastructure() {

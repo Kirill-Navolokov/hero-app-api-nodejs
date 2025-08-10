@@ -11,10 +11,10 @@ export class UnitsSeeder extends BaseSeeder implements DataSeeder {
         super();
     }
 
-    async Seed(db: Db): Promise<void> {
+    async seed(db: Db): Promise<void> {
         var unitsCollection = db.collection(this.envConfig.dbUnitsCollection);
 
-        await this.SeedEntities(unitsCollection);
+        await this.seedEntities(unitsCollection);
     }
 
     async getSeedData(): Promise<any[]> {

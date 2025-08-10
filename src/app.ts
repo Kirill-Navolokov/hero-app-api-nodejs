@@ -13,6 +13,7 @@ import 'express-async-errors'
 import { exceptionMiddleware } from './middlewares/exceptionMiddleware';
 import AuthRoutes from './routes/authRoutes';
 import SupportRoutes from './routes/supportRoutes';
+import { BusinessesRoutes } from './routes/businessesRoutes';
 
 export default class App {
     private readonly app: Application;
@@ -52,7 +53,8 @@ export default class App {
             iocContainer.get<WodsRoutes>(TYPES.WodsRoutes),
             iocContainer.get<UnitsRoutes>(TYPES.UnitsRoutes),
             iocContainer.get<AuthRoutes>(TYPES.AuthRoutes),
-            iocContainer.get<SupportRoutes>(TYPES.SupportRoutes)
+            iocContainer.get<SupportRoutes>(TYPES.SupportRoutes),
+            iocContainer.get<BusinessesRoutes>(TYPES.BusinessesRoutes)
         ];
     }
 

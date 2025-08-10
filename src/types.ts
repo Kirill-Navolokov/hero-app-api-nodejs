@@ -23,6 +23,12 @@ const TYPES = {
 
     WorkoutsRepository: Symbol.for('WorkoutsRepository'),
 
+    BusinessesRepository: Symbol.for('BusinessesRepository'),
+    BusinessCategoriesRepository: Symbol.for('BusinessCategoriesRepository'),
+    BusinessesService: Symbol.for('BusinessesService'),
+    BusinessesController: Symbol.for('BusinessesController'),
+    BusinessesRoutes: Symbol.for('BusinessesRoutes'),
+
     EnvConfig: Symbol.for('EnvConfig'),
     DbClient: Symbol.for('DbClient')
 }

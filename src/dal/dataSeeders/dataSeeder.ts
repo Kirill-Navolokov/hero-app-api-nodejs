@@ -1,5 +1,5 @@
 import { Db } from "mongodb";
 
 export interface DataSeeder {
-    Seed(db: Db): Promise<void>;
+    seed(db: Db): Promise<void>;
 }

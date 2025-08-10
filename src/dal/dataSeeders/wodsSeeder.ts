@@ -10,10 +10,10 @@ export class WodsSeeder extends BaseSeeder implements DataSeeder {
         super()
     }
 
-    async Seed(db: Db): Promise<void> {
+    async seed(db: Db): Promise<void> {
         var wodsCollection = db.collection(this.envConfig.dbWodsCollection);
 
-        await this.SeedEntities(wodsCollection);
+        await this.seedEntities(wodsCollection);
     }
 
     async getSeedData() : Promise<any[]> {

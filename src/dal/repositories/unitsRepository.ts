@@ -21,7 +21,7 @@ export class UnitsRepository extends BaseRepository<UnitEntity> {
 
     public async get() : Promise<UnitEntity[]> {
         var collection = this.getCollection();
-        var units = (await collection.find({}).toArray())
+        var units = await collection.find({}).toArray();
     
         return units;
     }

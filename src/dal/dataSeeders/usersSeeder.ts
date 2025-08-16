@@ -7,6 +7,7 @@ import { rolesConstants } from "../../helpers/rolesConstants";
 import { seedingConstants } from "./seedingConstants";
 import { encryptPassword } from "../../helpers/functions";
 import { emailUsernameIndexCollation } from "../repositories/usersRepository";
+import { RoleType } from "../entities/roleEntity";
 
 export class UsersSeeder extends BaseSeeder implements DataSeeder {
     constructor(private envConfig: EnvConfig) {
@@ -37,7 +38,7 @@ export class UsersSeeder extends BaseSeeder implements DataSeeder {
                 email: "admin@gmail.com",
                 username: "admin",
                 encryptedPassword: encryptedPassword,
-                roles: [rolesConstants.admin]
+                roles: [RoleType.ADMIN]
             }
         ];
 

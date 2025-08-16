@@ -6,11 +6,11 @@ export abstract class BaseSeeder {
 
     protected async seedEntities(collection: Collection<Document>) : Promise<void> {
         for(var entity of await this.getSeedData()) {
-            await collection.findOne({_id: entity._id})
-                .then(res => {
-                    if(res == null)
-                        collection.insertOne(entity);
-                });
+            let res = await collection.findOne({_id: entity._id});
+            if(res == null)
+                await collection.insertOne(entity);
+            else
+                await collection.findOneAndReplace({_id: entity._id}, entity);
         }
     }
 }

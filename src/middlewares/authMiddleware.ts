@@ -9,10 +9,11 @@ import { rolesConstants } from "../helpers/rolesConstants";
 import { OAuth2Client } from "google-auth-library";
 import { UsersService } from "../services/usersService";
 import { User } from "../models/user";
+import { RoleType } from "../dal/entities/roleEntity";
 
 export const adminAuthMiddleware = async (req: Request, res: Response, next: NextFunction) => {
-    var user = await authenticateUser(req);
-    var index = user.roles?.indexOf(rolesConstants.admin);
+    let user = await authenticateUser(req);
+    let index = user.roles?.indexOf(RoleType.ADMIN);
     if(index == undefined || index == -1)
         throw HeroBookError.fromUnauthorized("Not enough rights");
 
@@ -20,26 +21,24 @@ export const adminAuthMiddleware = async (req: Request, res: Response, next: Nex
 }
 
 export const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
-    var user = await authenticateUser(req);
+    let user = await authenticateUser(req);
 
     next();
 }
 
 async function authenticateUser(req: Request): Promise<UserEntity> {
-    var authHeader = req.header("Authorization");
-    console.log(req.originalUrl);
+    let authHeader = req.header("Authorization");
     if(!authHeader)
         throw HeroBookError.fromUnauthorized();
 
-    var token = authHeader.split(' ')[1];
-    var envConfig = iocContainer.get<EnvConfig>(TYPES.EnvConfig);
+    let token = authHeader.split(' ')[1];
+    let envConfig = iocContainer.get<EnvConfig>(TYPES.EnvConfig);
 
     try {
         // if(await tryGoogleAuth(token, envConfig.googleClientId)) {
             
         // }
-
-        var user = jwt.verify(token, envConfig.jwtSecretKey) as UserEntity;
+        let user = jwt.verify(token, envConfig.jwtSecretKey) as UserEntity;
 
         return user;
     } catch(error) {

@@ -25,6 +25,9 @@ import { BusinessCategoriesRepository } from "./dal/repositories/businessCategor
 import { BusinessesService } from "./services/businessesService";
 import { BusinessesController } from "./controllers/businessesController";
 import { BusinessesRoutes } from "./routes/businessesRoutes";
+import { BlobServiceClient } from "@azure/storage-blob";
+import BlobService from "./services/blobService";
+import { BlobServiceClientFactory } from "./helpers/blobServiceClientFactory";
 
 class IoCContainer extends Container {
     constructor() {
@@ -63,6 +66,7 @@ class IoCContainer extends Container {
         this.bind<UsersService>(TYPES.UsersService).to(UsersService).inRequestScope();
         this.bind<SupportService>(TYPES.SupportService).to(SupportService).inRequestScope();
         this.bind<BusinessesService>(TYPES.BusinessesService).to(BusinessesService).inRequestScope();
+        this.bind<BlobService>(TYPES.BlobService).to(BlobService).inSingletonScope();
     }
 
     private registerRepositories() {
@@ -78,6 +82,10 @@ class IoCContainer extends Container {
     private registerInfrastructure() {
         this.bind<EnvConfig>(TYPES.EnvConfig).to(EnvConfig).inSingletonScope();
         this.bind<DbClient>(TYPES.DbClient).to(DbClient).inSingletonScope();
+        this.bind<BlobServiceClientFactory>(TYPES.BlobServiceClientFactory)
+            .toFactory<BlobServiceClient>((context) => (name) => {
+                return BlobServiceClient.fromConnectionString(process.env.STORAGE_ACCOUNT_CONNECTION_STRING as string)
+    })
     }
 }
 

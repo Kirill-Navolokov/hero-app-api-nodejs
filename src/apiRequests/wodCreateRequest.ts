@@ -1,4 +1,5 @@
-import { IsDateString, IsDecimal, IsDefined, IsNotEmpty, IsNumber, Max, MaxLength } from "class-validator";
+import { Type } from "class-transformer";
+import { IsDateString, IsDecimal, IsDefined, IsNotEmpty, IsNotEmptyObject, IsNumber, Max, MaxLength } from "class-validator";
 
 export class WodCreateRequest {
     unitId?: string;
@@ -22,5 +23,6 @@ export class WodCreateRequest {
     @IsDefined()
     @IsNumber()
     @Max(2)
+    @Type(() => Number)
     type!: number;
 }

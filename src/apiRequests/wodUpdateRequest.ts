@@ -1,9 +1,7 @@
+import { Type } from "class-transformer";
 import { IsDateString, isDefined, IsDefined, IsNotEmpty, IsNumber, IsUrl, Max, MaxLength } from "class-validator";
 
 export class WodUpdateRequest {
-    @IsDefined()
-    id!: string;
-
     unitId?: string;
 
     @IsDefined()
@@ -25,11 +23,6 @@ export class WodUpdateRequest {
     @IsDefined()
     @IsNumber()
     @Max(2)
+    @Type(() => Number)
     type!: number;
-
-    @IsUrl()
-    imageUrl?: string;
-
-    @IsUrl()
-    backgroundUrl?: string;
 }

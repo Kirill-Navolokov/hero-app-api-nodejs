@@ -1,5 +1,4 @@
 import { ObjectId } from "mongodb"
-import { Workout } from "../../models/workout";
 
 export type UnitEntity = {
     _id: ObjectId;
@@ -8,5 +7,6 @@ export type UnitEntity = {
     type: number;
     foundationDate: Date;
     imageUrl: string;
+    imageName: string;
     socialNetworks?: {[type: number]: string}
 }

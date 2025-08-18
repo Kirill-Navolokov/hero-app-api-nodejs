@@ -7,7 +7,7 @@ import { transformAndValidate, validateImage } from "../helpers/functions";
 
 @injectable()
 export class WodsController {
-    constructor(@inject(TYPES.WodsService) private wodsService: WodsService) {
+    constructor(@inject(TYPES.WodsService) private readonly wodsService: WodsService) {
     }
 
     public getWods: RequestHandler = async (req, res, next) => {
@@ -28,7 +28,7 @@ export class WodsController {
         res.status(200).send();
     }
 
-    public createWod: RequestHandler = async (req, res) => {
+    public createWod: RequestHandler = async (req, res, next) => {
         const createRequest = await transformAndValidate(WodCreateRequest, req.body);
         await validateImage(req.file!);
         const createdWod = await this.wodsService.create(req.file!, createRequest);
@@ -40,7 +40,10 @@ export class WodsController {
         if(req.file)
             await validateImage(req.file);
         const updateRequest = await transformAndValidate(WodCreateRequest, req.body);
-        const updatedWod = await this.wodsService.update(req.params.id, updateRequest, req.file);
+        const updatedWod = await this.wodsService.update(
+            req.params.id,
+            updateRequest,
+            req.file);
 
         res.status(200).json(updatedWod);
     }

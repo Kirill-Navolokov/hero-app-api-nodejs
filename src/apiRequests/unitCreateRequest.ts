@@ -1,3 +1,4 @@
+import { Type } from "class-transformer";
 import { IsDateString, IsDefined, IsNotEmpty, IsNumber, Max, MaxLength } from "class-validator";
 
 export class UnitCreateRequest {
@@ -6,15 +7,16 @@ export class UnitCreateRequest {
     name!: string;
 
     @IsNotEmpty()
-    @MaxLength(200)
+    @MaxLength(1000)
     description!: string;
 
     @IsDefined()
     @IsDateString()
-    foundationDate!: Date;
+    foundationDate!: string;
 
     @IsDefined()
     @IsNumber()
     @Max(1)
+    @Type(() => Number)
     type!: number;
 }

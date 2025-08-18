@@ -4,6 +4,7 @@ import { TYPES } from '../types';
 import { inject, injectable } from 'inversify';
 import { UnitsController } from '../controllers/unitsController';
 import { adminAuthMiddleware, authMiddleware } from '../middlewares/authMiddleware';
+import multer from 'multer';
 
 @injectable()
 export default class UnitsRoutes implements Route {
@@ -18,14 +19,15 @@ export default class UnitsRoutes implements Route {
     }
 
     mapRoutes(): void {
+        const upload = multer({storage: multer.memoryStorage()});
+
         this.router.get('/', this.unitsController.getUnits);
         this.router.get('/:id', this.unitsController.getUnit);
-        this.router.post('/', adminAuthMiddleware, this.unitsController.createUnit);
-        this.router.patch('/:id', adminAuthMiddleware, this.unitsController.updateUnit);
+        this.router.post('/', adminAuthMiddleware, upload.single('image'), this.unitsController.createUnit);
+        this.router.put('/:id', adminAuthMiddleware, upload.single('image'), this.unitsController.updateUnit);
         this.router.delete('/:id', adminAuthMiddleware, this.unitsController.deleteUnit);
 
         this.router.get('/:id/wods', this.unitsController.getWods);
-        // this.router.get('/:id/wods/:wodId', authMiddleware, this.unitsController.getWod);
         // this.router.post('/:id/wods', adminAuthMiddleware, this.unitsController.createWod);
         // this.router.patch('/:id/wods/:wodId', adminAuthMiddleware, this.unitsController.updateWod);
         // this.router.delete('/:id/wods/:wodId', adminAuthMiddleware, this.unitsController.deleteWod);

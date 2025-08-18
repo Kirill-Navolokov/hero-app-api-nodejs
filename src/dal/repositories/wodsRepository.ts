@@ -21,7 +21,7 @@ export class WodsRepository extends BaseRepository<WodEntity> {
 
     public async get() : Promise<WodEntity[]> {
         const collection = this.getCollection();
-        const wods = (await collection.find({}).toArray())
+        const wods = await collection.find({}).toArray();
     
         return wods;
     }

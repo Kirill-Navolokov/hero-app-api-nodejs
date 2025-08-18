@@ -15,13 +15,18 @@ export function toModel(entity: UnitEntity): Unit {
     };
 }
 
-export function toEntity(createRequest: UnitCreateRequest): UnitEntity {
+export function toEntity(
+    createRequest: UnitCreateRequest,
+    imageName: string,
+    imageUrl: string
+): UnitEntity {
     return {
         _id: new ObjectId(),
         name: createRequest.name,
         description: createRequest.description,
         type: createRequest.type,
-        foundationDate: createRequest.foundationDate,
-        imageUrl: ''
+        foundationDate: new Date(createRequest.foundationDate),
+        imageUrl: imageUrl,
+        imageName: imageName
     };
 }

@@ -19,6 +19,7 @@ export default class App {
     private readonly app: Application;
 
     constructor() {
+        this.setEnvConfig();
         this.app = express();
 
         this.app.get('/', (req, res) => {
@@ -26,7 +27,6 @@ export default class App {
         });
         this.app.use(express.json())
         this.registerRoutes();
-        this.setEnvConfig();
 
         this.app.use(exceptionMiddleware);
     }

@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { IsDateString, IsDecimal, IsDefined, IsNotEmpty, IsNotEmptyObject, IsNumber, Max, MaxLength } from "class-validator";
+import { IsDateString, IsDefined, IsNotEmpty, IsNumber, Max, MaxLength } from "class-validator";
 
 export class WodCreateRequest {
     unitId?: string;
@@ -13,7 +13,7 @@ export class WodCreateRequest {
     description!: string;
 
     @IsNotEmpty()
-    @MaxLength(1000)
+    @MaxLength(500)
     scheme!: string;
 
     @IsDefined()

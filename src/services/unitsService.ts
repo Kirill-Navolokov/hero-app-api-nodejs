@@ -2,7 +2,7 @@ import { inject, injectable } from "inversify";
 import { TYPES } from "../types";
 import { Unit } from "../models/unit";
 import { toEntity, toModel } from "../mappings/unitsMapper";
-import { toWorkoutModel } from "../mappings/workoutsMapper";
+import { toWorkoutEntity, toWorkoutModel } from "../mappings/workoutsMapper";
 import { UnitsRepository } from "../dal/repositories/unitsRepository";
 import { UnitCreateRequest } from "../apiRequests/unitCreateRequest";
 import { Workout } from "../models/workout";
@@ -11,6 +11,8 @@ import { UnitEntity } from "../dal/entities/unitEntity";
 import { HeroBookError } from "../helpers/heroBookError";
 import BlobService from "./blobService";
 import { EnvConfig } from "../config/environment";
+import { WorkoutEntity } from "../dal/entities/workoutEntity";
+import { WorkoutCreateRequest } from "../apiRequests/workoutCreateRequest";
 
 @injectable()
 export default class UnitsService {
@@ -54,7 +56,7 @@ export default class UnitsService {
         id: string,
         unitUpdate: UnitCreateRequest,
         file?: Express.Multer.File
-    ): Promise<Unit | null> {
+    ): Promise<Unit> {
         const unit = await this.getEntity(id);
 
         if(file)
@@ -68,15 +70,55 @@ export default class UnitsService {
     }
 
     public async getWods(unitId: string): Promise<Workout[]> {
+        const unit = await this.getEntity(unitId);
+
         return this.workoutsRepository.getByUnit(unitId)
             .then(entities => entities.map(toWorkoutModel));
     }
 
+    public async createWod(unitId: string, createRequest: WorkoutCreateRequest): Promise<Workout> {
+        await this.getEntity(unitId);
+        const wodEntity = toWorkoutEntity(createRequest, unitId);
+
+        return await this.workoutsRepository.create(wodEntity)
+            .then(entity => toWorkoutModel(entity));
+    }
+
+    public async updateWod(
+        unitId: string,
+        wodId: string,
+        updateRequest: WorkoutCreateRequest
+    ): Promise<Workout> {
+        await this.getEntity(unitId);
+        await this.getWodEntity(unitId, wodId);
+
+        return await this.workoutsRepository.update(wodId, updateRequest)
+            .then(entity => toWorkoutModel(entity!));
+    }
+
+    public async deleteWod(unitId: string, wodId: string): Promise<void> {
+        await this.getEntity(unitId);
+        await this.getWodEntity(unitId, wodId);
+
+        await this.workoutsRepository.delete(wodId);
+    }
+
     private async getEntity(id: string): Promise<UnitEntity> {
-        let unitEntity = await this.unitsRepository.getById(id);
+        const unitEntity = await this.unitsRepository.getById(id);
         if(unitEntity == null)
             throw HeroBookError.fromNotFound("Unit", id);
     
         return unitEntity;
+    }
+
+    private async getWodEntity(unitId: string, wodId: string): Promise<WorkoutEntity> {
+        const workoutEntity = await this.workoutsRepository.getById(wodId);
+        if(workoutEntity == null)
+            throw HeroBookError.fromNotFound("Unit workout", wodId);
+
+        if(workoutEntity.unitId.toString() != unitId)
+            throw new HeroBookError("Workout not found for unit", 404);
+
+        return workoutEntity;
     }
 }

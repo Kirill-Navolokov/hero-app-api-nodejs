@@ -1,7 +1,14 @@
+import { IsDateString, IsDefined, IsNotEmpty, MaxLength } from "class-validator";
+
 export class WorkoutCreateRequest {
-    unitId!: string;
+    @MaxLength(20)
+    name!: string;
 
-    name?: string;
+    @IsNotEmpty()
+    @MaxLength(1000)
+    description!: string;
 
-    description!: string; 
+    @IsDefined()
+    @IsDateString()
+    date!: string;
 }

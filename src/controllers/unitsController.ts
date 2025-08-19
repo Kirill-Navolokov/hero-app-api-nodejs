@@ -4,6 +4,7 @@ import { inject, injectable } from "inversify";
 import UnitsService from "../services/unitsService";
 import { UnitCreateRequest } from "../apiRequests/unitCreateRequest";
 import { transformAndValidate, validateImage } from "../helpers/functions";
+import { WorkoutCreateRequest } from "../apiRequests/workoutCreateRequest";
 
 @injectable()
 export class UnitsController {
@@ -49,9 +50,31 @@ export class UnitsController {
     }
 
     public getWods: RequestHandler<{id: string}> = async (req, res, next) => {
-        const unitId = req.params.id;
-        const wods = await this.unitsService.getWods(unitId);
+        const wods = await this.unitsService.getWods(req.params.id);
 
         res.status(200).json(wods);
+    }
+
+    public createWod: RequestHandler<{id: string}> = async (req, res, next) => {
+        const createRequest = await transformAndValidate(WorkoutCreateRequest, req.body);
+        const createdWod = await this.unitsService.createWod(req.params.id, createRequest);
+
+        res.status(200).json(createdWod);
+    }
+
+    public updateWod: RequestHandler<{id: string, wodId: string}> = async (req, res, next) => {
+        const updateRequest = await transformAndValidate(WorkoutCreateRequest, req.body);
+        const updatedWod = await this.unitsService.updateWod(
+            req.params.id,
+            req.params.wodId,
+            updateRequest);
+
+        res.status(200).json(updatedWod);
+    }
+
+    public deleteWod: RequestHandler<{id: string, wodId: string}> = async (req, res, next) => {
+        await this.unitsService.deleteWod(req.params.id, req.params.wodId);
+
+        res.status(200).send();
     }
 }

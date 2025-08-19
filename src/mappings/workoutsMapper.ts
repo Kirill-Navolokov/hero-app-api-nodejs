@@ -13,12 +13,14 @@ export function toWorkoutModel(entity: WorkoutEntity): Workout {
     }
 }
 
-export function toWorkoutEntity(createRequest: WorkoutCreateRequest): WorkoutEntity {
+export function toWorkoutEntity(
+    createRequest: WorkoutCreateRequest,
+    unitId: string): WorkoutEntity {
     return {
         _id: new ObjectId(),
-        unitId: new ObjectId(createRequest.unitId),
+        unitId: new ObjectId(unitId),
         name: createRequest.name,
-        date: new Date(),
+        date: new Date(createRequest.date),
         description: createRequest.description
     }
 }

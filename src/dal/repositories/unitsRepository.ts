@@ -35,7 +35,7 @@ export class UnitsRepository extends BaseRepository<UnitEntity> {
     public delete(id: string): Promise<any> {
         const collection = this.getCollection();
 
-        return collection.deleteOne({_id: new ObjectId(id)})
+        return collection.deleteOne({_id: new ObjectId(id)});
     }
 
     public async create(newUnit: UnitEntity): Promise<UnitEntity> {

@@ -24,4 +24,12 @@ export class BusinessCategoriesRepository extends BaseRepository<BusinessCategor
 
         return map;
     }
+
+    public async getByIds(ids: string[]): Promise<Array<BusinessCategoryEntity>> {
+        let objectIds = ids.map(id => new ObjectId(id));
+        const collection = this.getCollection();
+        let categories = await collection.find({_id: {$in: objectIds}}).toArray();
+
+        return categories;
+    }
 }

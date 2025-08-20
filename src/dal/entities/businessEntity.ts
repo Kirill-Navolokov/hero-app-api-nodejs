@@ -5,5 +5,6 @@ export type BusinessEntity = {
     name: string;
     link: string;
     imageUrl: string;
+    imageName: string;
     categoriesIds: Array<string>
 }

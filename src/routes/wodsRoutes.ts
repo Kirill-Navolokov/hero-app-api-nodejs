@@ -3,7 +3,7 @@ import { WodsController } from '../controllers/wodsController';
 import { Route } from './route';
 import { TYPES } from '../types';
 import { inject, injectable } from 'inversify';
-import multer, { FileFilterCallback } from "multer";
+import multer from "multer";
 import { adminAuthMiddleware, authMiddleware } from '../middlewares/authMiddleware';
 
 @injectable()

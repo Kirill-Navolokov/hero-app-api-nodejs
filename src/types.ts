@@ -30,7 +30,10 @@ const TYPES = {
     BusinessesRoutes: Symbol.for('BusinessesRoutes'),
 
     EnvConfig: Symbol.for('EnvConfig'),
-    DbClient: Symbol.for('DbClient')
+    DbClient: Symbol.for('DbClient'),
+    BlobServiceClient: Symbol.for('BlobServiceClient'),
+    BlobServiceClientFactory: Symbol.for("BlobServiceClientFactory"),
+    BlobService: Symbol.for('BlobService')
 }
 
 export { TYPES }

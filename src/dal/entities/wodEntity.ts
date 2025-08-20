@@ -10,5 +10,5 @@ export interface WodEntity {
     creationDate: Date;
     type: number;
     imageUrl: string;
-    backgroundUrl?: string;
+    imageName: string;
 }

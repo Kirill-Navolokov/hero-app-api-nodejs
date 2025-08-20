@@ -13,12 +13,15 @@ export function toModel(entity: WodEntity): Wod {
         executionDate: entity.executionDate,
         creationDate: entity.creationDate,
         type: entity.type,
-        imageUrl: entity.imageUrl,
-        backgroundUrl: entity.backgroundUrl
+        imageUrl: entity.imageUrl
     };
 }
 
-export function toEntity(createRequest: WodCreateRequest): WodEntity {
+export function toEntity(
+    createRequest: WodCreateRequest,
+    imageName: string,
+    imageUrl: string
+): WodEntity {
     return {
         _id: new ObjectId(),
         unitId: createRequest.unitId == undefined 
@@ -30,6 +33,7 @@ export function toEntity(createRequest: WodCreateRequest): WodEntity {
         executionDate: new Date(createRequest.executionDate),
         creationDate: new Date(),
         type: createRequest.type,
-        imageUrl: ""
+        imageUrl: imageUrl,
+        imageName: imageName
     };
 }

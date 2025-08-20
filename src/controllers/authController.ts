@@ -1,10 +1,10 @@
-import { transformAndValidate } from "class-transformer-validator";
 import { RequestHandler } from "express";
 import { inject, injectable } from "inversify";
 import { LoginRequest } from "../apiRequests/loginRequest";
 import { TYPES } from "../types";
 import { AuthService } from "../services/authService";
 import { SignUpRequest } from "../apiRequests/signUpRequest";
+import { transformAndValidate } from "../helpers/functions";
 
 @injectable()
 export class AuthController {
@@ -12,18 +12,14 @@ export class AuthController {
     }
 
     public login: RequestHandler = async (req, res, next) => {
-        var loginRequest = await transformAndValidate(
-            LoginRequest,
-            req.body as object);
-        var loginResponse = await this.authService.authenticateUser(loginRequest);
+        const loginRequest = await transformAndValidate(LoginRequest, req.body);
+        const loginResponse = await this.authService.authenticateUser(loginRequest);
 
         res.status(200).json(loginResponse);
     }
 
     public signUp: RequestHandler = async (req, res, next) => {
-        var signUpRequest = await transformAndValidate(
-            SignUpRequest,
-            req.body as object);
+        var signUpRequest = await transformAndValidate(SignUpRequest, req.body);
         var response = await this.authService.signUp(signUpRequest);
 
         res.status(200).json(response);

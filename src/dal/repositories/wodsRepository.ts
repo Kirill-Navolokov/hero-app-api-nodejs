@@ -4,8 +4,8 @@ import { DbClient } from "../dbConnection";
 import { EnvConfig } from "../../config/environment";
 import { ObjectId, ReturnDocument } from "mongodb";
 import { WodEntity } from "../entities/wodEntity";
-import { WodUpdateRequest } from "../../apiRequests/wodUpdateRequest";
 import { BaseRepository } from "./baseRepository";
+import { WodCreateRequest } from "../../apiRequests/wodCreateRequest";
 
 @injectable()
 export class WodsRepository extends BaseRepository<WodEntity> {
@@ -20,44 +20,44 @@ export class WodsRepository extends BaseRepository<WodEntity> {
     }
 
     public async get() : Promise<WodEntity[]> {
-        var collection = this.getCollection();
-        var wods = (await collection.find({}).toArray())
+        const collection = this.getCollection();
+        const wods = await collection.find({}).toArray();
     
         return wods;
     }
 
     public getById(id: string): Promise<WodEntity | null> {
-        var collection = this.getCollection();
+        const collection = this.getCollection();
 
         return collection.findOne({_id: new ObjectId(id)});
     }
 
     public delete(id: string): Promise<any> {
-        var collection = this.getCollection();
+        const collection = this.getCollection();
 
-        return collection.deleteOne({_id: new ObjectId(id)})
+        return collection.deleteOne({_id: new ObjectId(id)});
     }
 
     public async create(newWod: WodEntity): Promise<WodEntity> {
-        var collection = this.getCollection();
-        var result =  await collection.insertOne(newWod, {forceServerObjectId: true});
+        const collection = this.getCollection();
+        const result =  await collection.insertOne(newWod, {forceServerObjectId: true});
         newWod._id = result.insertedId;
 
         return newWod;
     }
 
-    public async update(id: string, wodUpdate: WodUpdateRequest) : Promise<WodEntity | null> {
-        var collection = this.getCollection();
-        var updateQuery = { $set: {
-            unitId: wodUpdate.unitId == undefined ?  undefined : new ObjectId(wodUpdate.unitId),
-            name: wodUpdate.name,
-            description: wodUpdate.description,
-            scheme: wodUpdate.scheme,
-            executionDate: new Date(wodUpdate.executionDate),
-            type: wodUpdate.type,
-            imageUrl: wodUpdate.imageUrl,
-            backgroundUrl: wodUpdate.backgroundUrl
-        }};
+    public async update(id: string, wodUpdate: WodCreateRequest) : Promise<WodEntity | null> {
+        const collection = this.getCollection();
+        const updateQuery = { 
+            $set: {
+                unitId: wodUpdate.unitId == undefined ?  undefined : new ObjectId(wodUpdate.unitId),
+                name: wodUpdate.name,
+                description: wodUpdate.description,
+                scheme: wodUpdate.scheme,
+                executionDate: new Date(wodUpdate.executionDate),
+                type: wodUpdate.type,
+            }
+        };
 
         return collection.findOneAndUpdate(
             {_id: new ObjectId(id)},

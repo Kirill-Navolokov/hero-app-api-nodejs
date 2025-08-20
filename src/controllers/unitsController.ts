@@ -2,28 +2,25 @@ import { RequestHandler } from "express";
 import { TYPES } from "../types";
 import { inject, injectable } from "inversify";
 import UnitsService from "../services/unitsService";
-import { UnitUpdateRequest } from "../apiRequests/unitUpdateRequest";
 import { UnitCreateRequest } from "../apiRequests/unitCreateRequest";
-import { transformAndValidate } from "class-transformer-validator";
-import { validateEqualIds } from "../helpers/functions";
+import { transformAndValidate, validateImage } from "../helpers/functions";
+import { WorkoutCreateRequest } from "../apiRequests/workoutCreateRequest";
 
 @injectable()
 export class UnitsController {
-    constructor(@inject(TYPES.UnitsService) private unitsService: UnitsService) {
+    constructor(@inject(TYPES.UnitsService) private readonly unitsService: UnitsService) {
     }
 
     public getUnits: RequestHandler = async (req, res, next) => {
-        var units = await this.unitsService.get();
+        const units = await this.unitsService.get();
 
         res.status(200).json(units);
     }
 
     public getUnit: RequestHandler<{id: string}> = async (req, res, next) => {
-        var unit = await this.unitsService.getById(req.params.id);
-        var statusCode = unit == null ? 404 : 200;
-        var result = unit == null ? `No units found by id: ${req.params.id}` : unit;
+        const unit = await this.unitsService.getById(req.params.id);
 
-        res.status(statusCode).json(result);
+        res.status(200).json(unit);
     }
 
     public deleteUnit: RequestHandler<{id: string}> = async (req, res, next) => {
@@ -33,32 +30,51 @@ export class UnitsController {
     }
 
     public createUnit: RequestHandler = async (req, res, next) => {
-        var createRequest = await transformAndValidate(
-            UnitCreateRequest,
-            req.body as object);
-        var createdUnit = await this.unitsService.create(createRequest);
+        const createRequest = await transformAndValidate(UnitCreateRequest, req.body);
+        await validateImage(req.file!);
+        const createdUnit = await this.unitsService.create(req.file!, createRequest);
 
         res.status(200).json(createdUnit);
     }
 
     public updateUnit: RequestHandler<{id: string}> = async (req, res, next) => {
-        var unitId = req.params.id;
-        var updateRequest = await transformAndValidate(
-            UnitUpdateRequest,
-            req.body as object);
-        validateEqualIds(unitId, updateRequest.id);
+        if(req.file)
+            await validateImage(req.file);
+        const updateRequest = await transformAndValidate(UnitCreateRequest, req.body);
+        const updatedUnit = await this.unitsService.update(
+            req.params.id,
+            updateRequest,
+            req.file);
 
-        var updatedUnit = await this.unitsService.update(unitId, updateRequest);
-        var statusCode = updatedUnit == null ? 404 : 200;
-        var result = updatedUnit == null ? `No units found by id: ${req.params.id}` : updatedUnit;
-
-        res.status(statusCode).json(result);
+        res.status(200).json(updatedUnit);
     }
 
     public getWods: RequestHandler<{id: string}> = async (req, res, next) => {
-        var unitId = req.params.id;
-        var wods = await this.unitsService.getWods(unitId);
+        const wods = await this.unitsService.getWods(req.params.id);
 
         res.status(200).json(wods);
+    }
+
+    public createWod: RequestHandler<{id: string}> = async (req, res, next) => {
+        const createRequest = await transformAndValidate(WorkoutCreateRequest, req.body);
+        const createdWod = await this.unitsService.createWod(req.params.id, createRequest);
+
+        res.status(200).json(createdWod);
+    }
+
+    public updateWod: RequestHandler<{id: string, wodId: string}> = async (req, res, next) => {
+        const updateRequest = await transformAndValidate(WorkoutCreateRequest, req.body);
+        const updatedWod = await this.unitsService.updateWod(
+            req.params.id,
+            req.params.wodId,
+            updateRequest);
+
+        res.status(200).json(updatedWod);
+    }
+
+    public deleteWod: RequestHandler<{id: string, wodId: string}> = async (req, res, next) => {
+        await this.unitsService.deleteWod(req.params.id, req.params.wodId);
+
+        res.status(200).send();
     }
 }

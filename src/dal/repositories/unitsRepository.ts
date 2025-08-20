@@ -4,8 +4,8 @@ import { DbClient } from "../dbConnection";
 import { EnvConfig } from "../../config/environment";
 import { UnitEntity } from "../entities/unitEntity";
 import { ObjectId, ReturnDocument } from "mongodb";
-import { UnitUpdateRequest } from "../../apiRequests/unitUpdateRequest";
 import { BaseRepository } from "./baseRepository";
+import { UnitCreateRequest } from "../../apiRequests/unitCreateRequest";
 
 @injectable()
 export class UnitsRepository extends BaseRepository<UnitEntity> {
@@ -20,39 +20,42 @@ export class UnitsRepository extends BaseRepository<UnitEntity> {
     }
 
     public async get() : Promise<UnitEntity[]> {
-        var collection = this.getCollection();
-        var units = (await collection.find({}).toArray())
+        const collection = this.getCollection();
+        const units = await collection.find({}).toArray();
     
         return units;
     }
     
     public getById(id: string): Promise<UnitEntity | null> {
-        var collection = this.getCollection();
+        const collection = this.getCollection();
 
         return collection.findOne({_id: new ObjectId(id)});
     }
     
     public delete(id: string): Promise<any> {
-        var collection = this.getCollection();
+        const collection = this.getCollection();
 
-        return collection.deleteOne({_id: new ObjectId(id)})
+        return collection.deleteOne({_id: new ObjectId(id)});
     }
 
     public async create(newUnit: UnitEntity): Promise<UnitEntity> {
-        var collection = this.getCollection();
-        var result =  await collection.insertOne(newUnit, {forceServerObjectId: true});
+        const collection = this.getCollection();
+        const result =  await collection.insertOne(newUnit, {forceServerObjectId: true});
         newUnit._id = result.insertedId;
 
         return newUnit;
     }
 
-    public async update(id: string, unitUpdate: UnitUpdateRequest) : Promise<UnitEntity | null> {
-        var collection = this.getCollection();
-        var updateQuery = { $set: {
-            name: unitUpdate.name,
-            description: unitUpdate.description,
-            foundationDate: unitUpdate.foundationDate
-        }};
+    public async update(id: string, unitUpdate: UnitCreateRequest) : Promise<UnitEntity | null> {
+        const collection = this.getCollection();
+        const updateQuery = { 
+            $set: {
+                name: unitUpdate.name,
+                description: unitUpdate.description,
+                foundationDate: new Date(unitUpdate.foundationDate),
+                type: unitUpdate.type
+            }
+        };
 
         return collection.findOneAndUpdate(
             {_id: new ObjectId(id)},

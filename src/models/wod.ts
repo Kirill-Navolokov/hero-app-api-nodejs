@@ -10,5 +10,4 @@ export interface Wod {
     creationDate: Date;
     type: WodHonorship;
     imageUrl: string;
-    backgroundUrl?: string;
 }

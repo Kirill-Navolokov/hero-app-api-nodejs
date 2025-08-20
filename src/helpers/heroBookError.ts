@@ -12,4 +12,8 @@ export class HeroBookError extends Error {
         message = message == undefined ? "Unauthorized" : message;
         return new HeroBookError(message, 401);
     }
+
+    public static fromNotFound(itemType: string, itemId: string): HeroBookError {
+        return new HeroBookError(`${itemType} by id(s): ${itemId} not found`, 404);
+    }
 }

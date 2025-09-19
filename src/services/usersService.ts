@@ -31,6 +31,10 @@ export class UsersService {
         return this.usersRepository.setRefreshToken(userId, refreshToken);
     }
 
+    public async setSignedUp(id: ObjectId): Promise<void> {
+        return this.usersRepository.setSignedUp(id);
+    }
+
     // public async createOAuthUser(): Promise<User> {
     //     var userEntity: UserEntity = {
     //         _id: new ObjectId(),

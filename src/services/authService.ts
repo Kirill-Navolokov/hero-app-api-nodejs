@@ -30,6 +30,9 @@ export class AuthService {
         if(!isPasswordCorrect)
             throw HeroBookError.fromUnauthorized();
 
+        if(!user.passedSignUp)
+            await this.usersService.setSignedUp(user._id);
+
         return await this.getLoginResponse(user);
     }
 

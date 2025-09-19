@@ -44,7 +44,6 @@ export class UsersRepository extends BaseRepository<UserEntity> {
     }
 
     public async setPassword(id: ObjectId, encryptedPassword: string): Promise<void> {
-        const collection = this.getCollection();
         const updateQuery = {
             $set: {
                 encryptedPassword: encryptedPassword,
@@ -52,21 +51,24 @@ export class UsersRepository extends BaseRepository<UserEntity> {
                 otp: undefined
             }
         };
-        await collection.findOneAndUpdate(
-            {_id: new ObjectId(id)},
-            updateQuery,
-            {returnDocument: ReturnDocument.AFTER});
+        return this.updateUser(id, updateQuery);
     }
 
     public async setRefreshToken(id: ObjectId, refreshToken: string): Promise<void> {
-        const collection = this.getCollection();
         const updateQuery = {
             $set: { refreshToken: refreshToken }
         };
-        await collection.findOneAndUpdate(
-            {_id: new ObjectId(id)},
-            updateQuery,
-            {returnDocument: ReturnDocument.AFTER});
+        return this.updateUser(id, updateQuery);
+    }
+
+    public async setSignedUp(id: ObjectId): Promise<void> {
+        const updateQuery = {
+            $set: {
+                passedSignUp: true,
+                otp: undefined
+            }
+        };
+        return this.updateUser(id, updateQuery);
     }
 
     private async updateUser(
@@ -74,15 +76,10 @@ export class UsersRepository extends BaseRepository<UserEntity> {
         updateQuery: UpdateFilter<UserEntity>
     ): Promise<void> {
         const collection = this.getCollection();
-        try {
         await collection.findOneAndUpdate(
             {_id: new ObjectId(id)},
             updateQuery,
             {returnDocument: ReturnDocument.AFTER});
-        } catch(error) {
-            console.log(error);
-        }
-
     }
 
     protected get collectionName(): string {

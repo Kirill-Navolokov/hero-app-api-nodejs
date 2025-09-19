@@ -3,8 +3,11 @@ import { RoleType } from "./roleEntity";
 
 export interface UserEntity {
     _id: ObjectId,
-    username: string;
     email: string;
     encryptedPassword: string;
-    roles: RoleType[]
+    roles: RoleType[];
+    passedSignUp: boolean;
+    otp?: string;
+    tgUserId?: number;
+    refreshToken?: string;
 }

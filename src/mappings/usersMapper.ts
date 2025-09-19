@@ -5,8 +5,9 @@ export function toModel(entity: UserEntity): User {
     return {
         id: entity._id.toString(),
         email: entity.email,
-        username: entity.username,
-        encryptedPassword: entity.encryptedPassword,
-        roles: entity.roles
+        roles: entity.roles,
+        passedSignUp: entity.passedSignUp,
+        otp: entity.otp,
+        tgUserId: entity.tgUserId
     };
 }

@@ -5,6 +5,7 @@ import { TYPES } from "../types";
 import { AuthService } from "../services/authService";
 import { SignUpRequest } from "../apiRequests/signUpRequest";
 import { transformAndValidate } from "../helpers/functions";
+import { ValidationError } from "class-validator";
 
 @injectable()
 export class AuthController {
@@ -19,15 +20,23 @@ export class AuthController {
     }
 
     public signUp: RequestHandler = async (req, res, next) => {
-        var signUpRequest = await transformAndValidate(SignUpRequest, req.body);
-        var response = await this.authService.signUp(signUpRequest);
+        const signUpRequest = await transformAndValidate(SignUpRequest, req.body);
+        if(signUpRequest.password != signUpRequest.confirmPassword) {
+            const error = new ValidationError();
+            error.property = "confirmPassword"
+            error.constraints = { "shouldBeTheSame": "password and confirmPassword are not the same" };
+
+            throw [error];
+        }
+
+        const response = await this.authService.signUp(signUpRequest);
 
         res.status(200).json(response);
     }
 
     public tokenRefresh: RequestHandler = async (req, res, next) => {
-        var refreshToken = req.headers.authorization!.split(' ')[1];
-        var tokenRefreshResponse = await this.authService.refreshTokens(refreshToken);
+        const refreshToken = req.headers.authorization!.split(' ')[1];
+        const tokenRefreshResponse = await this.authService.refreshTokens(refreshToken);
 
         res.status(200).json(tokenRefreshResponse);
     }

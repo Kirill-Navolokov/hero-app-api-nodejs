@@ -8,5 +8,7 @@ export type UnitEntity = {
     foundationDate: Date;
     imageUrl: string;
     imageName: string;
-    socialNetworks?: {[type: number]: string}
+    isPublished: boolean;
+    socialNetworks?: {[type: number]: string};
+    adminId: ObjectId;
 }

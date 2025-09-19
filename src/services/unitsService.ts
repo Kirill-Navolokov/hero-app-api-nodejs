@@ -1,7 +1,7 @@
 import { inject, injectable } from "inversify";
 import { TYPES } from "../types";
 import { Unit } from "../models/unit";
-import { toEntity, toModel } from "../mappings/unitsMapper";
+import { toModel } from "../mappings/unitsMapper";
 import { toWorkoutEntity, toWorkoutModel } from "../mappings/workoutsMapper";
 import { UnitsRepository } from "../dal/repositories/unitsRepository";
 import { UnitCreateRequest } from "../apiRequests/unitCreateRequest";
@@ -42,15 +42,15 @@ export default class UnitsService {
         ]);
     }
 
-    public async create(file: Express.Multer.File, createRequest: UnitCreateRequest): Promise<Unit> {
-        return await this.blobService
-            .upload(file, this.envConfig.storageAccountUnitsContainer)
-            .then(async uploadResponse => {
-                const entity = await this.unitsRepository
-                    .create(toEntity(createRequest, uploadResponse[0], uploadResponse[1]));
-                return toModel(entity);
-            });
-    }
+    // public async create(file: Express.Multer.File, createRequest: UnitCreateRequest): Promise<Unit> {
+    //     return await this.blobService
+    //         .upload(file, this.envConfig.storageAccountUnitsContainer)
+    //         .then(async uploadResponse => {
+    //             const entity = await this.unitsRepository
+    //                 .create(toEntity(createRequest, uploadResponse[0], uploadResponse[1]));
+    //             return toModel(entity);
+    //         });
+    // }
 
     public async update(
         id: string,

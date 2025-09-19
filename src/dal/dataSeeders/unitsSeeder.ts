@@ -28,6 +28,7 @@ export class UnitsSeeder extends BaseSeeder implements DataSeeder {
                 foundationDate: new Date(2014, 5, 5),
                 imageUrl: "https://pik.net.ua/wp-content/uploads/2024/10/462228690_1063990435728218_8531819207706704481_n-1-scaled11-scaled.jpg",
                 imageName: "azov.png",
+                isPublished: true,
                 socialNetworks: {
                     [SocialNetwork.website] : "https://azov.org.ua",
                     [SocialNetwork.instagram] : "https://www.instagram.com/12th.azov.brigade",
@@ -37,6 +38,7 @@ export class UnitsSeeder extends BaseSeeder implements DataSeeder {
                     // [SocialNetwork.tiktok]: "https://www.tiktok.com/@1st.corps.azov",
                     // [SocialNetwork.telegram]: "https://t.me/azov_brigade_ngu",
                 },
+                adminId: new ObjectId(seedingConstants.users.admin)
                 // workouts: [
                 //     {
                 //         name: "",
@@ -63,9 +65,11 @@ export class UnitsSeeder extends BaseSeeder implements DataSeeder {
                 foundationDate: new Date(2022, 1, 24),
                 imageUrl: "https://bratstvo.army/logo.png",
                 imageName: "bratstvo.png",
+                isPublished: true,
                 socialNetworks: {
                     [SocialNetwork.website] : 'https://bratstvo.army'
-                }
+                },
+                adminId: new ObjectId(seedingConstants.users.admin)
             },
             {
                 _id: new ObjectId(seedingConstants.units.daVinciWolfs),
@@ -75,8 +79,10 @@ export class UnitsSeeder extends BaseSeeder implements DataSeeder {
 108 окремий механізований батальйон 59 ОШБр утворено на основі «Вовків Да Вінчі», які в лютому 2024 року вийшли зі складу 1-го окремого штурмового батальйону 67 ОМБр.`,
                 type: 0,
                 foundationDate: new Date(2022, 4, 8),
+                isPublished: true,
                 imageUrl: "https://scontent-waw2-2.xx.fbcdn.net/v/t39.30808-6/358357536_648204767357184_4535080849947393637_n.png?stp=dst-png_p720x720&_nc_cat=102&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=IG5MXwp3pocQ7kNvgHJ87WN&_nc_zt=23&_nc_ht=scontent-waw2-2.xx&_nc_gid=A1aA0neEeAEngiAZgMp9dcD&oh=00_AYDazkr8FjfTL6mqiMXAntEETosynoz1DLc0j2RLVZxbuA&oe=6784FD62",
                 imageName: "daVinciWolfs.png",
+                adminId: new ObjectId(seedingConstants.users.admin)
             },
             {
                 _id: new ObjectId(seedingConstants.units.nobody),
@@ -90,10 +96,12 @@ export class UnitsSeeder extends BaseSeeder implements DataSeeder {
                 foundationDate: new Date(2022, 1, 24),
                 imageUrl: "https://nobody.army/assets/img/bg-5.webp",
                 imageName: "nobody.png",
+                isPublished: true,
                 socialNetworks: {
                     [SocialNetwork.instagram] : "https://www.instagram.com/nobody_we_are",
                     [SocialNetwork.website]: "https://nobody.army"
                 },
+                adminId: new ObjectId(seedingConstants.users.admin)
             },
             {
                 _id: new ObjectId(seedingConstants.units.artan),
@@ -111,10 +119,12 @@ export class UnitsSeeder extends BaseSeeder implements DataSeeder {
                 foundationDate: new Date(2022, 5, 1),
                 imageUrl: "https://scontent.fkun1-2.fna.fbcdn.net/v/t39.30808-6/438097482_122143117406101106_8330186646644860787_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=6ee11a&_nc_ohc=mdXIbE1CZeIQ7kNvwFtfees&_nc_oc=Adnm7lOH8ee7b5T66BCQsWVDNHQknvgIW4OgC-sYnvtGgc72Jx2N8ixxT2hitb8OAxM&_nc_zt=23&_nc_ht=scontent.fkun1-2.fna&_nc_gid=0c1icHItF7y6mbK8V9R_3w&oh=00_AfQB_n16a0XW0I_ncxTrw2aRAzgdr0v8AzmjpDcS-02vCg&oe=6875FCB5",
                 imageName: "artan.png",
+                isPublished: true,
                 socialNetworks: {
                     [SocialNetwork.instagram] : "https://www.instagram.com/artan.gur",
                     [SocialNetwork.website]: "https://www.artan-gur.com"
                 },
+                adminId: new ObjectId(seedingConstants.users.admin)
             },
             {
                 _id: new ObjectId(seedingConstants.units.shamanbat),
@@ -126,9 +136,11 @@ export class UnitsSeeder extends BaseSeeder implements DataSeeder {
                 foundationDate: new Date(2022, 1, 23),
                 imageUrl: "https://cdn.prod.website-files.com/65f1832aa515715046fe6caa/65f1a28c9626b4fee346f8d1_intro-logo.png",
                 imageName: "shamanbat.png",
+                isPublished: true,
                 socialNetworks: {
                     [SocialNetwork.website]: "https://www.pirateship.company"
                 },
+                adminId: new ObjectId(seedingConstants.users.admin)
             },
             {
                 _id: new ObjectId(seedingConstants.units.kraken),
@@ -138,9 +150,11 @@ export class UnitsSeeder extends BaseSeeder implements DataSeeder {
                 foundationDate: new Date(2022, 1, 24),
                 imageUrl: "https://upload.wikimedia.org/wikipedia/commons/9/97/Kraken_Special_Unit_Insignia.png",
                 imageName: "kraken.png",
+                isPublished: true,
                 socialNetworks: {
                     [SocialNetwork.website]: "https://kraken-gur.army"
                 },
+                adminId: new ObjectId(seedingConstants.users.admin)
             },
             {
                 _id: new ObjectId(seedingConstants.units.assault3rd),
@@ -159,12 +173,14 @@ export class UnitsSeeder extends BaseSeeder implements DataSeeder {
                 foundationDate: new Date(2022, 1, 24),
                 imageUrl: "https://sz.uzhgorod.ua/wp-content/uploads/2024/03/prapor-3-oshbr-okrema-shturmova-brygada.jpg",
                 imageName: "3ab.png",
+                isPublished: true,
                 socialNetworks: {
                     [SocialNetwork.website]: "https://ab3.army",
                     [SocialNetwork.instagram]: "https://www.instagram.com/ab3.army",
                     [SocialNetwork.youtube]: "https://www.youtube.com/@ab3army",
                     [SocialNetwork.spotify]: "https://open.spotify.com/artist/5PchdBWAnESzmi6rBbxq4M?si=sMTLorLBSnu2mo7uvXkknw"
                 },
+                adminId: new ObjectId(seedingConstants.users.admin)
             },
             {
                 _id: new ObjectId(seedingConstants.units.internationalLegion),
@@ -184,10 +200,12 @@ export class UnitsSeeder extends BaseSeeder implements DataSeeder {
                 foundationDate: new Date(2022, 2, 7),
                 imageUrl: "https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/LegionDIU.webp/600px-LegionDIU.webp.png",
                 imageName: "internationalLegion.png",
+                isPublished: true,
                 socialNetworks: {
                     [SocialNetwork.website]: "https://uadd.me/DIULegion",
                     [SocialNetwork.instagram]: "https://www.instagram.com/international_legion_diu"
                 },
+                adminId: new ObjectId(seedingConstants.users.admin)
             },
             {
                 _id: new ObjectId(seedingConstants.units.cgt),
@@ -197,10 +215,12 @@ export class UnitsSeeder extends BaseSeeder implements DataSeeder {
                 foundationDate: new Date(2018, 1, 1),
                 imageUrl: "https://static.wixstatic.com/media/5a33ce_9748a8d3161f48ee9f0a9a0f310d61d3~mv2.png/v1/fill/w_1080,h_1080,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/1.png",
                 imageName: "cgt.png",
+                isPublished: true,
                 socialNetworks: {
                     [SocialNetwork.instagram] : "https://www.instagram.com/company_group_team",
                     [SocialNetwork.youtube]: "https://www.youtube.com/@CompanyGroupTeam"
                 },
+                adminId: new ObjectId(seedingConstants.users.admin)
             }
         ]
 

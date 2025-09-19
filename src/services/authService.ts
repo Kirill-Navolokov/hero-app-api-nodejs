@@ -7,8 +7,6 @@ import jwt from 'jsonwebtoken'
 import { EnvConfig } from "../config/environment";
 import { SignUpRequest } from "../apiRequests/signUpRequest";
 import { UsersService } from "./usersService";
-import { SignUpResponse } from "../models/signUpResponse";
-import { User } from "../models/user";
 import { LoginResponse } from "../models/loginResponse";
 import type { StringValue } from "ms";
 import { TokensResponse } from "../models/tokensResponse";
@@ -32,54 +30,54 @@ export class AuthService {
         if(!isPasswordCorrect)
             throw HeroBookError.fromUnauthorized();
 
-        return {
-            userInfo: {
-                email: user.email,
-                username: user.username
-            },
-            tokens: {
-                accessToken: this.generateAccessToken(user, '1h'),
-                refreshToken: this.generateAccessToken(user, '2h')
-            }
-        }
+        return await this.getLoginResponse(user);
     }
 
-    public async signUp(signUpRequest: SignUpRequest): Promise<SignUpResponse> {
-        var user = await this.usersService.checkExists(
-            signUpRequest.email,
-            signUpRequest.username);
+    public async signUp(signUpRequest: SignUpRequest): Promise<LoginResponse|null> {
+        let user = await this.usersService.checkExists(signUpRequest.email);
+        if(!user)
+            throw new HeroBookError("User not exists", 404);
 
-        if(!user) {
-            var createdUser = await this.usersService.create(signUpRequest);
-            return {
-                user: {
-                    email: createdUser.email,
-                    username: createdUser.username
-                },
-                accessToken: this.generateAccessToken(createdUser, '5m')
-            };
-        } else {
-            var message = user.email.toLowerCase() == signUpRequest.email.toLowerCase()
-                ? "Email already in use"
-                : "Username already in use";
-            
-            throw new HeroBookError(message, 400);
-        }
+        if(user.passedSignUp)
+            throw new HeroBookError("Already signed up", 400);
+
+        if(user.otp != signUpRequest.otp)
+            throw HeroBookError.fromUnauthorized("Wrong otp provided");
+
+        await this.usersService.setPassword(user._id, signUpRequest.password);
+        return await this.getLoginResponse(user);
     }
 
     public async refreshTokens(refreshToken: string): Promise<TokensResponse> {
         var userEntity = jwt.verify(refreshToken, this.envConfig.jwtSecretKey) as UserEntity;
         var user = await this.usersService.getByEmail(userEntity.email);
 
+        return this.getTokenResponse(user!)
+    }
+
+    private async getLoginResponse(user: UserEntity): Promise<LoginResponse> {
+        const response: LoginResponse = {
+            user: {
+                email: user.email,
+                type: user.roles[0]
+            },
+            tokens: this.getTokenResponse(user)
+        };
+        await this.usersService.setRefreshToken(user._id, response.tokens.refreshToken);
+
+        return response;
+    }
+
+    private getTokenResponse(user: UserEntity): TokensResponse {
         return {
-            accessToken: this.generateAccessToken(user!, '5m'),
-            refreshToken: this.generateAccessToken(user!, '10m')
+            accessToken: this.generateAccessToken(user, '1h'),
+            refreshToken: this.generateAccessToken(user, '2h')
         }
     }
 
-    private generateAccessToken(user: User, expiration: StringValue): string {
+    private generateAccessToken(user: UserEntity, expiration: StringValue): string {
         var token = jwt.sign(
-            {id: user.id, email: user.email, username: user.username, roles: user.roles},
+            {id: user._id.toString(), email: user.email, roles: user.roles},
             this.envConfig.jwtSecretKey,
             {expiresIn: expiration, algorithm: "HS256"});
         return token;

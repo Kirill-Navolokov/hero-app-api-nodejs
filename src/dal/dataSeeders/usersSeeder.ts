@@ -3,7 +3,6 @@ import { BaseSeeder } from "./baseSeeder";
 import { DataSeeder } from "./dataSeeder";
 import { EnvConfig } from "../../config/environment";
 import { UserEntity } from "../entities/userEntity";
-import { rolesConstants } from "../../helpers/rolesConstants";
 import { seedingConstants } from "./seedingConstants";
 import { encryptPassword } from "../../helpers/functions";
 import { emailUsernameIndexCollation } from "../repositories/usersRepository";
@@ -21,11 +20,6 @@ export class UsersSeeder extends BaseSeeder implements DataSeeder {
                 {email: 1},
                 {unique: true, name: "email", collation: emailUsernameIndexCollation}
             );
-        if(await usersCollection.indexExists("username") == false)
-            await usersCollection.createIndex(
-                {username: 1},
-                {unique: true, name: "username", collation: emailUsernameIndexCollation}
-            );
 
         await this.seedEntities(usersCollection);
     }
@@ -36,9 +30,9 @@ export class UsersSeeder extends BaseSeeder implements DataSeeder {
             {
                 _id: new ObjectId(seedingConstants.users.admin),
                 email: "admin@gmail.com",
-                username: "admin",
                 encryptedPassword: encryptedPassword,
-                roles: [RoleType.ADMIN]
+                roles: [RoleType.ADMIN],
+                passedSignUp: true
             }
         ];
 

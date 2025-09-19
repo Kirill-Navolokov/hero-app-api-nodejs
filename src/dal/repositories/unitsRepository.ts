@@ -21,7 +21,7 @@ export class UnitsRepository extends BaseRepository<UnitEntity> {
 
     public async get() : Promise<UnitEntity[]> {
         const collection = this.getCollection();
-        const units = await collection.find({}).toArray();
+        const units = await collection.find({isPublished: true}).toArray();
     
         return units;
     }
@@ -29,7 +29,7 @@ export class UnitsRepository extends BaseRepository<UnitEntity> {
     public getById(id: string): Promise<UnitEntity | null> {
         const collection = this.getCollection();
 
-        return collection.findOne({_id: new ObjectId(id)});
+        return collection.findOne({_id: new ObjectId(id), isPublished: true});
     }
     
     public delete(id: string): Promise<any> {

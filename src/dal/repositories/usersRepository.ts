@@ -4,6 +4,7 @@ import { TYPES } from "../../types";
 import { DbClient } from "../dbConnection";
 import { BaseRepository } from "./baseRepository";
 import { UserEntity } from "../entities/userEntity";
+import { ObjectId, ReturnDocument, UpdateFilter } from "mongodb";
 
 export const emailUsernameIndexCollation = {locale:"en", strength:1}
 
@@ -25,11 +26,11 @@ export class UsersRepository extends BaseRepository<UserEntity> {
         );
     }
 
-    public checkExists(email: string, username: string): Promise<UserEntity | null> {
+    public checkExists(email: string): Promise<UserEntity | null> {
         var collection = this.getCollection();
 
         return collection.findOne(
-            {$or: [{email: email}, {username: username}]},
+            {$or: [{email: email}]},
             {collation: emailUsernameIndexCollation}
         );
     }
@@ -40,6 +41,48 @@ export class UsersRepository extends BaseRepository<UserEntity> {
         newUser._id = result.insertedId;
 
         return newUser;
+    }
+
+    public async setPassword(id: ObjectId, encryptedPassword: string): Promise<void> {
+        const collection = this.getCollection();
+        const updateQuery = {
+            $set: {
+                encryptedPassword: encryptedPassword,
+                passedSignUp: true,
+                otp: undefined
+            }
+        };
+        await collection.findOneAndUpdate(
+            {_id: new ObjectId(id)},
+            updateQuery,
+            {returnDocument: ReturnDocument.AFTER});
+    }
+
+    public async setRefreshToken(id: ObjectId, refreshToken: string): Promise<void> {
+        const collection = this.getCollection();
+        const updateQuery = {
+            $set: { refreshToken: refreshToken }
+        };
+        await collection.findOneAndUpdate(
+            {_id: new ObjectId(id)},
+            updateQuery,
+            {returnDocument: ReturnDocument.AFTER});
+    }
+
+    private async updateUser(
+        id: ObjectId,
+        updateQuery: UpdateFilter<UserEntity>
+    ): Promise<void> {
+        const collection = this.getCollection();
+        try {
+        await collection.findOneAndUpdate(
+            {_id: new ObjectId(id)},
+            updateQuery,
+            {returnDocument: ReturnDocument.AFTER});
+        } catch(error) {
+            console.log(error);
+        }
+
     }
 
     protected get collectionName(): string {

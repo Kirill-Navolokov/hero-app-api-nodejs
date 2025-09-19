@@ -23,7 +23,7 @@ export default class UnitsRoutes implements Route {
 
         this.router.get('/', this.unitsController.getUnits);
         this.router.get('/:id', this.unitsController.getUnit);
-        this.router.post('/', adminAuthMiddleware, upload.single('image'), this.unitsController.createUnit);
+        //this.router.post('/', adminAuthMiddleware, upload.single('image'), this.unitsController.createUnit);
         this.router.put('/:id', adminAuthMiddleware, upload.single('image'), this.unitsController.updateUnit);
         this.router.delete('/:id', adminAuthMiddleware, this.unitsController.deleteUnit);
 

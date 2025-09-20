@@ -15,18 +15,19 @@ export function toModel(entity: UnitEntity): Unit {
     };
 }
 
-export function toEntity(
-    createRequest: UnitCreateRequest,
-    imageName: string,
-    imageUrl: string
-): UnitEntity {
-    return {
-        _id: new ObjectId(),
-        name: createRequest.name,
-        description: createRequest.description,
-        type: createRequest.type,
-        foundationDate: new Date(createRequest.foundationDate),
-        imageUrl: imageUrl,
-        imageName: imageName
-    };
-}
+// export function toEntity(
+//     createRequest: UnitCreateRequest,
+//     imageName: string,
+//     imageUrl: string
+// ): UnitEntity {
+//     return {
+//         _id: new ObjectId(),
+//         name: createRequest.name,
+//         description: createRequest.description,
+//         type: createRequest.type,
+//         foundationDate: new Date(createRequest.foundationDate),
+//         imageUrl: imageUrl,
+//         isPublished: false,
+//         imageName: imageName,
+//     };
+// }

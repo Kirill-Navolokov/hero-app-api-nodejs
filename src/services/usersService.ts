@@ -7,19 +7,32 @@ import { encryptPassword } from "../helpers/functions";
 import { ObjectId } from "mongodb";
 import { toModel } from "../mappings/usersMapper";
 import { User } from "../models/user";
+import { RoleType } from "../dal/entities/roleEntity";
 
 @injectable()
 export class UsersService {
     constructor(@inject(TYPES.UsersRepository) private usersRepository: UsersRepository) {
     }
 
-    public getByEmail(email: string): Promise<User | null> {
-        return this.usersRepository.getByEmail(email)
-            .then(entity => entity == null ? null : toModel(entity));
+    public getByEmail(email: string): Promise<UserEntity | null> {
+        return this.usersRepository.getByEmail(email);
     }
 
-    public checkExists(email: string, username: string): Promise<UserEntity | null> {
-        return this.usersRepository.checkExists(email, username);
+    public checkExists(email: string): Promise<UserEntity | null> {
+        return this.usersRepository.checkExists(email);
+    }
+
+    public async setPassword(userId: ObjectId, password: string): Promise<void> {
+        const encryptedPassword = await encryptPassword(password);
+        await this.usersRepository.setPassword(userId, encryptedPassword);
+    }
+
+    public setRefreshToken(userId: ObjectId, refreshToken: string): Promise<void> {
+        return this.usersRepository.setRefreshToken(userId, refreshToken);
+    }
+
+    public async setSignedUp(id: ObjectId): Promise<void> {
+        return this.usersRepository.setSignedUp(id);
     }
 
     // public async createOAuthUser(): Promise<User> {
@@ -36,14 +49,14 @@ export class UsersService {
     //     return newUser;
     // }
 
-    public async create(signUpRequest: SignUpRequest): Promise<User> {
+    public async create(signUpRequest: SignUpRequest, roles: RoleType[]): Promise<User> {
         var encryptedPassword = await encryptPassword(signUpRequest.password);
         var userEntity: UserEntity = {
             _id: new ObjectId(),
             email: signUpRequest.email,
-            username: signUpRequest.username,
             encryptedPassword: encryptedPassword,
-            roles: []
+            roles: roles,
+            passedSignUp: true
         };
         var newUser = await this.usersRepository.create(userEntity)
             .then(toModel);

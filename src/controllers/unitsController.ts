@@ -29,13 +29,13 @@ export class UnitsController {
         res.status(200).send();
     }
 
-    public createUnit: RequestHandler = async (req, res, next) => {
-        const createRequest = await transformAndValidate(UnitCreateRequest, req.body);
-        await validateImage(req.file!);
-        const createdUnit = await this.unitsService.create(req.file!, createRequest);
+    // public createUnit: RequestHandler = async (req, res, next) => {
+    //     const createRequest = await transformAndValidate(UnitCreateRequest, req.body);
+    //     await validateImage(req.file!);
+    //     const createdUnit = await this.unitsService.create(req.file!, createRequest);
 
-        res.status(200).json(createdUnit);
-    }
+    //     res.status(200).json(createdUnit);
+    // }
 
     public updateUnit: RequestHandler<{id: string}> = async (req, res, next) => {
         if(req.file)

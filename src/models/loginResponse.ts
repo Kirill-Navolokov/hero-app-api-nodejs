@@ -1,9 +1,10 @@
+import { RoleEntity, RoleType } from "../dal/entities/roleEntity";
 import { TokensResponse } from "./tokensResponse";
 
 export interface LoginResponse {
-    userInfo: {
+    user: {
         email: string,
-        username?: string
+        type: RoleType
     },
     tokens: TokensResponse
 }
